@@ -14,7 +14,10 @@
     "format": "prettier --check . --ignore-path .gitignore",
     "format:write": "prettier --write . --ignore-path .gitignore",
     "type-check": "tsc --noEmit",
-    "prepare": "node .husky/install.mjs && tsx scripts/setup.ts"
+    "prepare": "node .husky/install.mjs && tsx scripts/setup.ts",
+    "test:e2e:install": "playwright install --with-deps",
+    "test:e2e": "pnpm playwright test --config=playwright.config.ts",
+    "test:e2e:ui": "pnpm playwright test --ui --config=playwright.config.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
@@ -50,6 +53,7 @@
   "devDependencies": {
     "@eslint/compat": "^1.2.2",
     "@ianvs/prettier-plugin-sort-imports": "^4.3.1",
+    "@playwright/test": "^1.48.2",
     "@tailwindcss/typography": "^0.5.15",
     "@tanstack/eslint-plugin-router": "^1.79.0",
     "@tanstack/router-devtools": "^1.79.0",
@@ -67,7 +71,7 @@
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-react": "^7.37.2",
     "eslint-plugin-react-hooks": "^5.0.0",
-    "happy-dom": "^15.9.0",
+    "happy-dom": "^15.10.1",
     "husky": "^9.1.6",
     "lint-staged": "^15.2.10",
     "playwright": "^1.48.2",
@@ -76,6 +80,7 @@
     "prettier-plugin-tailwindcss": "^0.6.8",
     "sass-embedded": "^1.80.6",
     "tailwindcss": "^3.4.14",
+    "tailwindcss-animate": "^1.0.7",
     "tailwindcss-animated": "^1.1.2",
     "tsx": "^4.19.2",
     "typescript": "^5.6.3",

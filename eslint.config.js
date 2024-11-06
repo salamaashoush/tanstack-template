@@ -7,8 +7,9 @@ import tseslint from "typescript-eslint";
 
 const baseConfig = tseslint.config(
   // Ignore files not tracked by VCS and any config files
-  // includeIgnoreFile(path.join(process.cwd(), ".gitignore")),
-  { ignores: ["**/*.config.*", "**/generated"] },
+  {
+    ignores: ["**/*.config.*", "**/generated", ".vinxi", ".vercel", ".output"],
+  },
   {
     files: ["**/*.js", "**/*.ts", "**/*.tsx"],
     plugins: {

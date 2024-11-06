@@ -62,7 +62,7 @@ async function main() {
   await updateAuthSecret();
 }
 
-await main()
+main()
   .catch((err: unknown) => {
     console.error(err);
   })

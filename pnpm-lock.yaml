@@ -101,6 +101,9 @@ importers:
       "@ianvs/prettier-plugin-sort-imports":
         specifier: ^4.3.1
         version: 4.3.1(prettier@3.3.3)
+      "@playwright/test":
+        specifier: ^1.48.2
+        version: 1.48.2
       "@tailwindcss/typography":
         specifier: ^0.5.15
         version: 0.5.15(tailwindcss@3.4.14)
@@ -150,8 +153,8 @@ importers:
         specifier: ^5.0.0
         version: 5.0.0(eslint@9.14.0(jiti@2.4.0))
       happy-dom:
-        specifier: ^15.9.0
-        version: 15.10.0
+        specifier: ^15.10.1
+        version: 15.10.1
       husky:
         specifier: ^9.1.6
         version: 9.1.6
@@ -176,6 +179,9 @@ importers:
       tailwindcss:
         specifier: ^3.4.14
         version: 3.4.14
+      tailwindcss-animate:
+        specifier: ^1.0.7
+        version: 1.0.7(tailwindcss@3.4.14)
       tailwindcss-animated:
         specifier: ^1.1.2
         version: 1.1.2(tailwindcss@3.4.14)
@@ -199,7 +205,7 @@ importers:
         version: 5.1.0(typescript@5.6.3)(vite@5.4.10(@types/node@22.9.0)(sass-embedded@1.80.6)(terser@5.36.0))
       vitest:
         specifier: ^2.1.4
-        version: 2.1.4(@types/node@22.9.0)(@vitest/browser@2.1.4)(@vitest/ui@2.1.4)(happy-dom@15.10.0)(msw@2.6.0(@types/node@22.9.0)(typescript@5.6.3))(sass-embedded@1.80.6)(terser@5.36.0)
+        version: 2.1.4(@types/node@22.9.0)(@vitest/browser@2.1.4)(@vitest/ui@2.1.4)(happy-dom@15.10.1)(msw@2.6.0(@types/node@22.9.0)(typescript@5.6.3))(sass-embedded@1.80.6)(terser@5.36.0)
       vitest-browser-react:
         specifier: ^0.0.3
         version: 0.0.3(@types/react-dom@18.3.1)(@types/react@18.3.12)(@vitest/browser@2.1.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(vitest@2.1.4)
@@ -1707,6 +1713,14 @@ packages:
         integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==,
       }
     engines: { node: ">=14" }
+
+  "@playwright/test@1.48.2":
+    resolution:
+      {
+        integrity: sha512-54w1xCWfXuax7dz4W2M9uw0gDyh+ti/0K/MxcCUxChFh37kkdxPdfZDw5QBbuPUJHr1CiHJ1hXgSs+GgeQc5Zw==,
+      }
+    engines: { node: ">=18" }
+    hasBin: true
 
   "@polka/url@1.0.0-next.28":
     resolution:
@@ -4666,10 +4680,10 @@ packages:
         integrity: sha512-vFEAu/yf8UMUcB4s43OaDaigcqpQd14yanmOsn+NcRX3/guSKncyE2rOYhq8RIchgJrPSs/QiIddnTTR1ddiAg==,
       }
 
-  happy-dom@15.10.0:
+  happy-dom@15.10.1:
     resolution:
       {
-        integrity: sha512-l0DD4nTVearx2ODsrF3ywfdP+TLYPCVvNbG4ph2RmfB39HKiPY5tvk5a4EPGvcygKVykpwYw+Bh+7IDtnvkotQ==,
+        integrity: sha512-FuGnj/qIB4QnBL6fWmD7Wnh6STxevLgOVWB6+nopDGgWG1+t9CXkNB2ldZ+iqwD2UKxD2D0SU8el8A6AX6Q1+g==,
       }
     engines: { node: ">=18.0.0" }
 
@@ -7375,6 +7389,14 @@ packages:
         integrity: sha512-0q8cfZHMu9nuYP/b5Shb7Y7Sh1B7Nnl5GqNr1U+n2p6+mybvRtayrQ+0042Z5byvTA8ihjlP8Odo8/VnHbZu4Q==,
       }
 
+  tailwindcss-animate@1.0.7:
+    resolution:
+      {
+        integrity: sha512-bl6mpH3T7I3UFxuvDEXLxy/VuFxBk5bbzplh7tXI68mwMokNYd1t9qPBHlnyTwfa4JGC4zP516I1hYYtQ/vspA==,
+      }
+    peerDependencies:
+      tailwindcss: ">=3.0.0 || insiders"
+
   tailwindcss-animated@1.1.2:
     resolution:
       {
@@ -8955,6 +8977,10 @@ snapshots:
   "@pkgjs/parseargs@0.11.0":
     optional: true
 
+  "@playwright/test@1.48.2":
+    dependencies:
+      playwright: 1.48.2
+
   "@polka/url@1.0.0-next.28": {}
 
   "@radix-ui/primitive@1.1.0": {}
@@ -9750,7 +9776,7 @@ snapshots:
       msw: 2.6.0(@types/node@22.9.0)(typescript@5.6.3)
       sirv: 3.0.0
       tinyrainbow: 1.2.0
-      vitest: 2.1.4(@types/node@22.9.0)(@vitest/browser@2.1.4)(@vitest/ui@2.1.4)(happy-dom@15.10.0)(msw@2.6.0(@types/node@22.9.0)(typescript@5.6.3))(sass-embedded@1.80.6)(terser@5.36.0)
+      vitest: 2.1.4(@types/node@22.9.0)(@vitest/browser@2.1.4)(@vitest/ui@2.1.4)(happy-dom@15.10.1)(msw@2.6.0(@types/node@22.9.0)(typescript@5.6.3))(sass-embedded@1.80.6)(terser@5.36.0)
       ws: 8.18.0
     optionalDependencies:
       playwright: 1.48.2
@@ -9805,7 +9831,7 @@ snapshots:
       sirv: 3.0.0
       tinyglobby: 0.2.10
       tinyrainbow: 1.2.0
-      vitest: 2.1.4(@types/node@22.9.0)(@vitest/browser@2.1.4)(@vitest/ui@2.1.4)(happy-dom@15.10.0)(msw@2.6.0(@types/node@22.9.0)(typescript@5.6.3))(sass-embedded@1.80.6)(terser@5.36.0)
+      vitest: 2.1.4(@types/node@22.9.0)(@vitest/browser@2.1.4)(@vitest/ui@2.1.4)(happy-dom@15.10.1)(msw@2.6.0(@types/node@22.9.0)(typescript@5.6.3))(sass-embedded@1.80.6)(terser@5.36.0)
 
   "@vitest/utils@2.1.4":
     dependencies:
@@ -11061,7 +11087,7 @@ snapshots:
       uncrypto: 0.1.3
       unenv: 1.10.0
 
-  happy-dom@15.10.0:
+  happy-dom@15.10.1:
     dependencies:
       entities: 4.5.0
       webidl-conversions: 7.0.0
@@ -12647,6 +12673,10 @@ snapshots:
 
   tailwind-merge@2.5.4: {}
 
+  tailwindcss-animate@1.0.7(tailwindcss@3.4.14):
+    dependencies:
+      tailwindcss: 3.4.14
+
   tailwindcss-animated@1.1.2(tailwindcss@3.4.14):
     dependencies:
       tailwindcss: 3.4.14
@@ -13103,7 +13133,7 @@ snapshots:
       "@vitest/browser": 2.1.4(@types/node@22.9.0)(playwright@1.48.2)(typescript@5.6.3)(vite@5.4.10(@types/node@22.9.0)(sass-embedded@1.80.6)(terser@5.36.0))(vitest@2.1.4)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
-      vitest: 2.1.4(@types/node@22.9.0)(@vitest/browser@2.1.4)(@vitest/ui@2.1.4)(happy-dom@15.10.0)(msw@2.6.0(@types/node@22.9.0)(typescript@5.6.3))(sass-embedded@1.80.6)(terser@5.36.0)
+      vitest: 2.1.4(@types/node@22.9.0)(@vitest/browser@2.1.4)(@vitest/ui@2.1.4)(happy-dom@15.10.1)(msw@2.6.0(@types/node@22.9.0)(typescript@5.6.3))(sass-embedded@1.80.6)(terser@5.36.0)
     optionalDependencies:
       "@types/react": 18.3.12
       "@types/react-dom": 18.3.1
@@ -13116,9 +13146,9 @@ snapshots:
       dom-accessibility-api: 0.6.3
       lodash-es: 4.17.21
       redent: 4.0.0
-      vitest: 2.1.4(@types/node@22.9.0)(@vitest/browser@2.1.4)(@vitest/ui@2.1.4)(happy-dom@15.10.0)(msw@2.6.0(@types/node@22.9.0)(typescript@5.6.3))(sass-embedded@1.80.6)(terser@5.36.0)
+      vitest: 2.1.4(@types/node@22.9.0)(@vitest/browser@2.1.4)(@vitest/ui@2.1.4)(happy-dom@15.10.1)(msw@2.6.0(@types/node@22.9.0)(typescript@5.6.3))(sass-embedded@1.80.6)(terser@5.36.0)
 
-  vitest@2.1.4(@types/node@22.9.0)(@vitest/browser@2.1.4)(@vitest/ui@2.1.4)(happy-dom@15.10.0)(msw@2.6.0(@types/node@22.9.0)(typescript@5.6.3))(sass-embedded@1.80.6)(terser@5.36.0):
+  vitest@2.1.4(@types/node@22.9.0)(@vitest/browser@2.1.4)(@vitest/ui@2.1.4)(happy-dom@15.10.1)(msw@2.6.0(@types/node@22.9.0)(typescript@5.6.3))(sass-embedded@1.80.6)(terser@5.36.0):
     dependencies:
       "@vitest/expect": 2.1.4
       "@vitest/mocker": 2.1.4(msw@2.6.0(@types/node@22.9.0)(typescript@5.6.3))(vite@5.4.10(@types/node@22.9.0)(sass-embedded@1.80.6)(terser@5.36.0))
@@ -13144,7 +13174,7 @@ snapshots:
       "@types/node": 22.9.0
       "@vitest/browser": 2.1.4(@types/node@22.9.0)(playwright@1.48.2)(typescript@5.6.3)(vite@5.4.10(@types/node@22.9.0)(sass-embedded@1.80.6)(terser@5.36.0))(vitest@2.1.4)
       "@vitest/ui": 2.1.4(vitest@2.1.4)
-      happy-dom: 15.10.0
+      happy-dom: 15.10.1
     transitivePeerDependencies:
       - less
       - lightningcss
