@@ -11,11 +11,11 @@
 // Import Routes
 
 import { Route as rootRoute } from "./routes/__root";
-import { Route as RegisterImport } from "./routes/register";
-import { Route as LoginImport } from "./routes/login";
 import { Route as AuthenticatedImport } from "./routes/_authenticated";
-import { Route as IndexImport } from "./routes/index";
 import { Route as AuthenticatedHomeImport } from "./routes/_authenticated/home";
+import { Route as IndexImport } from "./routes/index";
+import { Route as LoginImport } from "./routes/login";
+import { Route as RegisterImport } from "./routes/register";
 
 // Create/Update Routes
 

@@ -2,10 +2,10 @@ import { createServerFn } from "@tanstack/start";
 import * as v from "valibot";
 import { setResponseStatus } from "vinxi/http";
 
-import { getUserService } from "~/api/index";
 import type { RegisterSchemaOutput } from "~/schema/auth";
-import { loginSchema } from "~/schema/auth";
 import type { AppSession } from "~/utils/session";
+import { getUserService } from "~/api/index";
+import { loginSchema } from "~/schema/auth";
 import { useAppSession } from "~/utils/session";
 
 export const getUserSession = createServerFn("GET", async () => {

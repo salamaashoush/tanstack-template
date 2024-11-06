@@ -8,16 +8,17 @@ import {
 import { Body, Head, Html, Meta, Scripts } from "@tanstack/start";
 
 import type { AppSession } from "~/utils/session";
+import { Toaster } from "~/components/ui/sonner";
+import { env } from "~/env";
 import { useTranslation } from "~/i18n/client";
 import { getUserSession } from "~/server/auth.server";
 import appCss from "~/styles/globals.scss?url";
 import { DefaultCatchBoundary } from "../components/DefaultCatchBoundary";
 import { NotFound } from "../components/NotFound";
 import { seo } from "../utils/seo";
-import { Toaster } from "~/components/ui/sonner";
 
 const TanStackRouterDevtools =
-  process.env.NODE_ENV === "production"
+  env.NODE_ENV === "production"
     ? () => null // Render nothing in production
     : lazy(() =>
         // Lazy load in development
@@ -29,7 +30,7 @@ const TanStackRouterDevtools =
       );
 
 const ReactQueryDevtools =
-  process.env.NODE_ENV === "production"
+  env.NODE_ENV === "production"
     ? () => null
     : lazy(() =>
         import("@tanstack/react-query-devtools").then((res) => ({

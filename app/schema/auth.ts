@@ -1,6 +1,6 @@
 import * as v from "valibot";
-import i18n from "~/i18n/client";
 
+import i18n from "~/i18n/client";
 import { emailSchema, passwordSchema, usernameSchema } from "./common";
 
 export const loginSchema = v.object({

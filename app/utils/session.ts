@@ -1,6 +1,6 @@
 import { useSession } from "vinxi/http";
-import type { UserProfile } from "~/api/services/user.service";
 
+import type { UserProfile } from "~/api/services/user.service";
 import { env } from "~/env";
 
 export interface AppSession {

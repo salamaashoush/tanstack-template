@@ -3,6 +3,8 @@ import { useMutation } from "@tanstack/react-query";
 import { Link, useRouter } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+
+import type { LoginSchemaOutput } from "~/schema/auth";
 import { Button } from "~/components/ui/button";
 import {
   Form,
@@ -14,7 +16,6 @@ import {
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { useTranslation } from "~/i18n/client";
-import type { LoginSchemaOutput } from "~/schema/auth";
 import { loginSchema } from "~/schema/auth";
 import { login } from "~/server/auth.server";
 

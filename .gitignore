@@ -30,6 +30,7 @@ yarn-error.log*
 
 # local env files
 .env*.local
+.env
 
 # vercel
 .vercel
@@ -48,9 +49,7 @@ yarn-error.log*
 /api/
 /server/build
 /public/build
-.vinxi
-# Sentry Config File
-.env.sentry-build-plugin
+
 /test-results/
 /playwright-report/
 /blob-report/

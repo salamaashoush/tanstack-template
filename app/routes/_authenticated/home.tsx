@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
+
 import { Button } from "~/components/ui/button";
 import { Card } from "~/components/ui/card";
 import { getUserProfileQuery } from "~/queries/user";
