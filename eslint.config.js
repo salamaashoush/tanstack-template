@@ -45,7 +45,7 @@ const baseConfig = tseslint.config(
   // Ignore files not tracked by VCS and any config files
   includeIgnoreFile(gitignorePath),
   {
-    ignores: ["**/*.config.*", "**/generated"],
+    ignores: ["**/*.config.*", "**/generated", "**/routeTree.gen.ts"],
   },
   {
     files: ["**/*.js", "**/*.ts", "**/*.tsx"],

@@ -39,7 +39,7 @@ jobs:
       - name: Format
         run: pnpm format
 
-  typecheck:
+  type-check:
     runs-on: ubuntu-latest
 
     steps:
@@ -49,7 +49,7 @@ jobs:
         uses: ./.github/setup
 
       - name: Typecheck
-        run: pnpm typecheck
+        run: pnpm type-check
 
   test:
     runs-on: ubuntu-latest

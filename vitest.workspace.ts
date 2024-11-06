@@ -1,15 +1,7 @@
 import { defineWorkspace } from "vitest/config";
 
 export default defineWorkspace([
-  {
-    test: {
-      environment: "happy-dom",
-      // reporters: ["default", "html"],
-      setupFiles: ["happy-dom.setup.ts"],
-      include: ["**/*.{test,spec}.{ts,tsx}"],
-      name: "unit",
-    },
-  },
+  "vitest.config.ts",
   {
     test: {
       include: ["**/*.browser.{test,spec}.{ts,tsx}"],

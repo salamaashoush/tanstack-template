@@ -1,6 +1,6 @@
 import * as v from "valibot";
 
-import i18n from "~/i18n/client";
+import { t } from "~/i18n/client";
 import { emailSchema, passwordSchema, usernameSchema } from "./common";
 
 export const loginSchema = v.object({
@@ -25,7 +25,7 @@ export const registerSchema = v.pipe(
     v.partialCheck(
       [["password"], ["confirmPassword"]],
       (input) => input.password === input.confirmPassword,
-      i18n.t("auth.register.error.passwordsDoNotMatch"),
+      t("auth.register.validation.passwordMismatch"),
     ),
     ["confirmPassword"],
   ),

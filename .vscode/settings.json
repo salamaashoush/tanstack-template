@@ -26,5 +26,8 @@
   "typescript.tsdk": "node_modules/typescript/lib",
   "[ignore]": {
     "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  "files.watcherExclude": {
+    "**/routeTree.gen.ts": true
   }
 }

@@ -1,5 +1,5 @@
 **/build
 **/public
 pnpm-lock.yaml
-routeTree.gen.ts
 **/generated
+**/routeTree.gen.ts
