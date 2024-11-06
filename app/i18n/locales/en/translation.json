@@ -1,0 +1,72 @@
+{
+  "home": {
+    "title": "Home",
+    "welcome": "Welcome to the home page",
+    "actions": {
+      "login": "Login",
+      "register": "Register"
+    }
+  },
+  "auth": {
+    "sessionExpired": {
+      "title": "Session Expired",
+      "message": "Your session has expired. Please login again"
+    },
+    "login": {
+      "title": "Login",
+      "description": "Welcome to the login page",
+
+      "form": {
+        "email": "Email",
+        "password": "Password",
+        "submit": "Login",
+        "forgotPassword": "Forgot Password?",
+        "createAccount": "Create Account"
+      },
+      "success": {
+        "title": "Success",
+        "message": "You have successfully logged in"
+      }
+    },
+    "register": {
+      "success": {
+        "title": "Registration Successful",
+        "message": "You have successfully registered. Please check your email to verify your account."
+      },
+      "form": {
+        "username": "Username",
+        "email": "Email",
+        "password": "Password",
+        "confirmPassword": "Confirm Password",
+        "submit": "Register"
+      },
+      "validation": {
+        "passwordMismatch": "Passwords do not match"
+      }
+    }
+  },
+  "validation": {
+    "required": "This field is required",
+    "email": "Please enter a valid email address",
+    "minLength": "This field must be at least {{length}} characters"
+  },
+  "notifications": {
+    "close": "Close",
+    "success": {
+      "title": "Success",
+      "message": "Your request has been successfully submitted"
+    },
+    "error": {
+      "title": "Error",
+      "message": "An error occurred, please try again later"
+    },
+    "warning": {
+      "title": "Warning",
+      "message": "Please fill all required fields"
+    },
+    "info": {
+      "title": "Info",
+      "message": "This is an info message"
+    }
+  }
+}
