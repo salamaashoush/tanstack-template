@@ -1,4 +1,5 @@
 import type { QueryClient } from "@tanstack/react-query";
+import type { ReactNode } from "react";
 import { lazy, useEffect } from "react";
 import {
   createRootRouteWithContext,
@@ -8,6 +9,7 @@ import {
 import { Body, Head, Html, Meta, Scripts } from "@tanstack/start";
 
 import type { AppSession } from "~/utils/session";
+import { ThemeProvider } from "~/components/ThemeProvider";
 import { Toaster } from "~/components/ui/sonner";
 import { env } from "~/env";
 import { useTranslation } from "~/i18n/client";
@@ -123,7 +125,7 @@ function RootComponent() {
 }
 
 interface RootDocumentProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 function RootDocument({ children }: RootDocumentProps) {
   const { i18n } = useTranslation();
@@ -139,7 +141,9 @@ function RootDocument({ children }: RootDocumentProps) {
         <Meta />
       </Head>
       <Body>
-        {children}
+        <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+          {children}
+        </ThemeProvider>
         <Toaster />
         <ScrollRestoration />
         <TanStackRouterDevtools position="bottom-right" />

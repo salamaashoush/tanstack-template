@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-restricted-imports
 import "i18next";
 
 import type translation from "./i18n/locales/en/translation.json";

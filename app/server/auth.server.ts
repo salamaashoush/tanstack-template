@@ -61,6 +61,14 @@ export const logout = createServerFn("POST", async () => {
 });
 
 export const getUserProfile = createServerFn("GET", async () => {
+  const session = await useAppSession();
+  if (!session.data.isAuthenticated) {
+    setResponseStatus(401);
+    throw {
+      message: "Unauthorized",
+    };
+  }
+
   try {
     return getUserService().getUserProfile();
   } catch (error) {

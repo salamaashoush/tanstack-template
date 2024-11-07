@@ -1,7 +1,14 @@
 import * as v from "valibot";
 
 import { t } from "~/i18n/client";
-import { emailSchema, passwordSchema, usernameSchema } from "./common";
+import {
+  companySchema,
+  emailSchema,
+  jobTitleSchema,
+  mobileNumberSchema,
+  passwordSchema,
+  usernameSchema,
+} from "./common";
 
 export const loginSchema = v.object({
   email: emailSchema,
@@ -16,8 +23,11 @@ export const forgotPasswordSchema = v.object({
 
 export const registerSchema = v.pipe(
   v.object({
-    username: usernameSchema,
     email: emailSchema,
+    name: usernameSchema,
+    mobile: mobileNumberSchema,
+    company: companySchema,
+    jobTitle: jobTitleSchema,
     password: passwordSchema,
     confirmPassword: v.string(),
   }),
@@ -25,7 +35,7 @@ export const registerSchema = v.pipe(
     v.partialCheck(
       [["password"], ["confirmPassword"]],
       (input) => input.password === input.confirmPassword,
-      t("auth.register.validation.passwordMismatch"),
+      t("validation.passwordMismatch"),
     ),
     ["confirmPassword"],
   ),

@@ -1,54 +1,83 @@
 {
-  "home": {
-    "title": "Home",
-    "welcome": "Welcome to the home page",
-    "actions": {
-      "login": "Login",
-      "register": "Register"
-    }
+  "theme": {
+    "title": "Switch Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "common": {
+    "copyRights": "© Fake Company {{year}}",
+    "companyName": "Fake Company"
+  },
+  "userNav": {
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Logout"
+  },
+  "dashboard": {
+    "title": "Home sweet home",
+    "welcome": "Welcome to the home page"
   },
   "auth": {
+    "layout": {
+      "title": "Start turning your ideas into reality.",
+      "body": "Create a free account and get full access to all features for 30-days. No credit card needed. Get started in 2 minutes."
+    },
     "sessionExpired": {
       "title": "Session Expired",
       "message": "Your session has expired. Please login again"
     },
-    "login": {
-      "title": "Login",
-      "description": "Welcome to the login page",
+    "signIn": {
+      "title": "Welcome back",
+      "body": "Welcome back! Please enter your details.",
 
       "form": {
         "email": "Email",
         "password": "Password",
-        "submit": "Login",
+        "submit": "Sign In",
         "forgotPassword": "Forgot Password?",
-        "createAccount": "Create Account"
+        "createAccount": "Don't have an account?",
+        "signUp": "Sign Up",
+        "submitting": "Signing In..."
       },
       "success": {
         "title": "Success",
         "message": "You have successfully logged in"
       }
     },
-    "register": {
+    "signUp": {
+      "title": "Sign Up",
+      "body": "Create your account",
       "success": {
         "title": "Registration Successful",
         "message": "You have successfully registered. Please check your email to verify your account."
       },
       "form": {
-        "username": "Username",
-        "email": "Email",
+        "name": "Name",
+        "namePlaceholder": "Enter your name",
+        "email": "Official Email",
+        "emailPlaceholder": "Work email",
+        "mobile": "Mobile",
+        "phoneCode": "Code",
+        "mobilePlaceholder": "Enter Mobile number",
+        "company": "Company Name",
+        "companyPlaceholder": "Enter Company name",
+        "jobTitle": "Your job title",
+        "jobTitlePlaceholder": "Enter Your Job Title",
         "password": "Password",
         "confirmPassword": "Confirm Password",
-        "submit": "Register"
-      },
-      "validation": {
-        "passwordMismatch": "Passwords do not match"
+        "submit": "Create account",
+        "submitting": "Creating Account...",
+        "haveAccount": "Already have an account?",
+        "signIn": "Sign In"
       }
     }
   },
   "validation": {
     "required": "This field is required",
     "email": "Please enter a valid email address",
-    "minLength": "This field must be at least {{length}} characters"
+    "minLength": "This field must be at least {{length}} characters",
+    "passwordMismatch": "Passwords do not match"
   },
   "notifications": {
     "close": "Close",

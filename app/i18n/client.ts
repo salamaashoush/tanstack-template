@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-imports */
 import type { FlatNamespace, KeyPrefix, TFunction } from "i18next";
 import type {
   FallbackNs,

@@ -37,6 +37,16 @@ export const restrictEnvAccess = tseslint.config({
         message:
           "Use `import { env } from '~/env'` instead to ensure validated types.",
       },
+      {
+        name: "react-i18next",
+        message:
+          "Import from `~/i18n/client` instead to ensure type safety and proper initialization.",
+      },
+      {
+        name: "i18next",
+        message:
+          "Import from `~/i18n/client` instead to ensure type safety and proper initialization.",
+      },
     ],
   },
 });
