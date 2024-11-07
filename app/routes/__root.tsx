@@ -1,6 +1,6 @@
 import type { QueryClient } from "@tanstack/react-query";
 import type { ReactNode } from "react";
-import { lazy, useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import {
   createRootRouteWithContext,
   Outlet,
@@ -69,10 +69,6 @@ export const Route = createRootRouteWithContext<AppRouterContext>()({
   links: () => [
     { rel: "stylesheet", href: appCss },
     {
-      rel: "stylesheet",
-      href: "https://js.arcgis.com/4.28/esri/themes/light/main.css",
-    },
-    {
       rel: "preconnect",
       href: "https://fonts.googleapis.com",
     },
@@ -84,7 +80,6 @@ export const Route = createRootRouteWithContext<AppRouterContext>()({
       href: "https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap",
       rel: "stylesheet",
     },
-
     {
       rel: "apple-touch-icon",
       sizes: "180x180",
@@ -141,13 +136,15 @@ function RootDocument({ children }: RootDocumentProps) {
         <Meta />
       </Head>
       <Body>
-        <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+        <ThemeProvider defaultTheme="dark">
           {children}
+          <Toaster />
         </ThemeProvider>
-        <Toaster />
         <ScrollRestoration />
-        <TanStackRouterDevtools position="bottom-right" />
-        <ReactQueryDevtools buttonPosition="bottom-left" />
+        <Suspense fallback={null}>
+          <TanStackRouterDevtools position="bottom-right" />
+          <ReactQueryDevtools buttonPosition="bottom-left" />
+        </Suspense>
         <Scripts />
       </Body>
     </Html>

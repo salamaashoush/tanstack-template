@@ -1,20 +1,18 @@
-import type { ReactNode } from "react";
 import { createContext, useContext, useEffect, useState } from "react";
-
-import { getStorageItem, setStorageItem } from "~/utils/storage";
+import { useCookies } from "react-cookie";
 
 type Theme = "dark" | "light" | "system";
 
-interface ThemeProviderProps {
-  children: ReactNode;
+type ThemeProviderProps = {
+  children: React.ReactNode;
   defaultTheme?: Theme;
-  storageKey?: string;
-}
+  cookieName?: string;
+};
 
-interface ThemeProviderState {
+type ThemeProviderState = {
   theme: Theme;
   setTheme: (theme: Theme) => void;
-}
+};
 
 const initialState: ThemeProviderState = {
   theme: "system",
@@ -25,17 +23,42 @@ const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
 
 export function ThemeProvider({
   children,
-  defaultTheme = "system",
-  storageKey = "vite-ui-theme",
+  defaultTheme = "dark",
+  cookieName = "theme",
   ...props
 }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme>(
-    () => getStorageItem(storageKey, defaultTheme) as Theme,
+  const [cookies, setCookie] = useCookies([cookieName]);
+  const [theme, setThemeState] = useState<Theme>(
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    () => (cookies[cookieName] as Theme) || defaultTheme,
   );
 
+  // Inject script to prevent flash
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.innerHTML = `
+      try {
+        const theme = document.cookie
+          .split('; ')
+          .find(row => row.startsWith('${cookieName}='))
+          ?.split('=')[1] || '${defaultTheme}';
+
+        if (theme === 'system') {
+          const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+          document.documentElement.classList.add(systemTheme);
+        } else {
+          document.documentElement.classList.add(theme);
+        }
+      } catch (e) {
+        console.warn('Theme initialization failed:', e);
+      }
+    `;
+    document.head.appendChild(script);
+  }, [cookieName, defaultTheme]);
+
+  // Handle theme changes
   useEffect(() => {
     const root = window.document.documentElement;
-
     root.classList.remove("light", "dark");
 
     if (theme === "system") {
@@ -51,12 +74,34 @@ export function ThemeProvider({
     root.classList.add(theme);
   }, [theme]);
 
+  // Handle system theme changes
+  useEffect(() => {
+    if (theme !== "system") return;
+
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    const handleChange = () => {
+      const root = window.document.documentElement;
+      root.classList.remove("light", "dark");
+      root.classList.add(mediaQuery.matches ? "dark" : "light");
+    };
+
+    mediaQuery.addEventListener("change", handleChange);
+    return () => mediaQuery.removeEventListener("change", handleChange);
+  }, [theme]);
+
+  const setTheme = (newTheme: Theme) => {
+    setCookie(cookieName, newTheme, {
+      path: "/",
+      secure: true,
+      sameSite: "strict",
+      maxAge: 31536000, // 1 year
+    });
+    setThemeState(newTheme);
+  };
+
   const value = {
     theme,
-    setTheme: (theme: Theme) => {
-      setStorageItem(storageKey, theme);
-      setTheme(theme);
-    },
+    setTheme,
   };
 
   return (
@@ -66,7 +111,7 @@ export function ThemeProvider({
   );
 }
 
-export function useTheme() {
+export const useTheme = () => {
   const context = useContext(ThemeProviderContext);
 
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -74,4 +119,4 @@ export function useTheme() {
     throw new Error("useTheme must be used within a ThemeProvider");
 
   return context;
-}
+};
