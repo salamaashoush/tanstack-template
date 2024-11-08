@@ -1,7 +1,7 @@
 import type { AxiosError, AxiosResponse } from "axios";
 import { isAxiosError } from "axios";
 
-import { t } from "~/i18n/client";
+import * as m from "~/i18n/messages";
 
 interface HasMessage {
   message: string;
@@ -17,7 +17,7 @@ export function getErrorMessageFromResponse(
     isAxiosError(response) ? response.response?.data : response.data
   ) as unknown;
   if (!hasMessage(data)) {
-    return t("notifications.error.message");
+    return m.notificationErrorMessage();
   }
   return data.message;
 }

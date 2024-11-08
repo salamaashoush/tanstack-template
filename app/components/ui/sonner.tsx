@@ -1,15 +1,15 @@
 import { Toaster as Sonner } from "sonner";
 
-import { useTheme } from "../ThemeProvider";
+import { useColorScheme } from "../theme/ColorSchemeProvider";
 
 type ToasterProps = React.ComponentProps<typeof Sonner>;
 
 const Toaster = ({ ...props }: ToasterProps) => {
-  const { theme = "system" } = useTheme();
+  const { colorScheme = "system" } = useColorScheme();
 
   return (
     <Sonner
-      theme={theme as ToasterProps["theme"]}
+      theme={colorScheme as ToasterProps["theme"]}
       className="toaster group"
       toastOptions={{
         classNames: {

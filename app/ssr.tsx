@@ -5,9 +5,16 @@ import {
   defaultStreamHandler,
 } from "@tanstack/start/server";
 
+import { setLanguageTag } from "./i18n/runtime";
 import { createRouter } from "./router";
+import { getLang } from "./utils/i18nSetup/server";
 
 export default createStartHandler({
   createRouter,
   getRouterManifest,
-})(defaultStreamHandler);
+})(async (ctx) => {
+  const lang = await getLang(ctx.request, "en");
+  setLanguageTag(lang);
+
+  return defaultStreamHandler(ctx);
+});

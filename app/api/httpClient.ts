@@ -3,7 +3,7 @@ import { toast } from "sonner";
 
 import type { AppSession } from "~/utils/session";
 import { env } from "~/env";
-import { t } from "~/i18n/client";
+import * as m from "~/i18n/messages";
 import { getUserSession } from "~/server/auth.server";
 import { getErrorMessageFromResponse } from "~/utils/axios";
 
@@ -31,8 +31,8 @@ httpClient.interceptors.response.use(
   (errorResponse) => {
     if (isAxiosError(errorResponse)) {
       if (errorResponse.response?.status == 401) {
-        toast.error(t("auth.sessionExpired.title"), {
-          description: t("auth.sessionExpired.message"),
+        toast.error(m.authSessionExpiredTitle(), {
+          description: m.authSessionExpiredMessage(),
         });
 
         // throw redirect({

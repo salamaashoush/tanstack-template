@@ -29,25 +29,6 @@ export const restrictEnvAccess = tseslint.config({
           "Use `import { env } from '~/env'` instead to ensure validated types.",
       },
     ],
-    "no-restricted-imports": [
-      "error",
-      {
-        name: "process",
-        importNames: ["env"],
-        message:
-          "Use `import { env } from '~/env'` instead to ensure validated types.",
-      },
-      {
-        name: "react-i18next",
-        message:
-          "Import from `~/i18n/client` instead to ensure type safety and proper initialization.",
-      },
-      {
-        name: "i18next",
-        message:
-          "Import from `~/i18n/client` instead to ensure type safety and proper initialization.",
-      },
-    ],
   },
 });
 
@@ -55,7 +36,12 @@ const baseConfig = tseslint.config(
   // Ignore files not tracked by VCS and any config files
   includeIgnoreFile(gitignorePath),
   {
-    ignores: ["**/*.config.*", "**/generated", "**/routeTree.gen.ts"],
+    ignores: [
+      "**/*.config.*",
+      "**/generated",
+      "**/routeTree.gen.ts",
+      "app/i18n/**",
+    ],
   },
   {
     files: ["**/*.js", "**/*.ts", "**/*.tsx"],

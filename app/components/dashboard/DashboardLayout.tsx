@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { ThemeToggle } from "../ThemeToggle";
+import { ThemeToggle } from "../theme/ThemeToggle";
 import { MainNav } from "./MainNav";
 import { Search } from "./Search";
 import { SideNav } from "./SideNav";

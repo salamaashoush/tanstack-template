@@ -16,19 +16,18 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
-import { useTranslation } from "~/i18n/client";
+import * as m from "~/i18n/messages";
 import { loginSchema } from "~/schema/auth";
 import { login } from "~/server/auth.server";
 
 export function SignInForm() {
-  const { t } = useTranslation();
   const router = useRouter();
   const { mutateAsync } = useMutation({
     mutationFn: login,
     mutationKey: ["user/login"],
     onSuccess: async () => {
-      toast(t("auth.signIn.success.title"), {
-        description: t("auth.signIn.success.message"),
+      toast(m.authSignInSuccessTitle(), {
+        description: m.authSignInSuccessMessage(),
       });
       await router.invalidate();
       router.navigate({ to: "/dashboard" });
@@ -60,10 +59,11 @@ export function SignInForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-foreground">
-                {t("auth.signIn.form.email")}
+                {m.authSignInFormEmail()}
               </FormLabel>
               <FormControl>
                 <Input
+                  type="email"
                   className="border-border bg-muted/50 text-foreground placeholder:text-neutral-600"
                   placeholder="Enter your email"
                   autoComplete="username"
@@ -79,7 +79,7 @@ export function SignInForm() {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("auth.signIn.form.password")}</FormLabel>
+              <FormLabel>{m.authSignInFormPassword()}</FormLabel>
               <FormControl>
                 <Input
                   className="border-border bg-muted/50 text-foreground placeholder:text-neutral-600"
@@ -98,7 +98,7 @@ export function SignInForm() {
             variant="link"
             className="h-auto p-0 font-medium text-muted-foreground hover:text-foreground"
           >
-            {t("auth.signIn.form.forgotPassword")}
+            {m.authSignInFormForgotPassword()}
           </Button>
         </div>
         <Button
@@ -107,18 +107,19 @@ export function SignInForm() {
           disabled={isSubmitting}
         >
           {isSubmitting
-            ? t("auth.signIn.form.submitting")
-            : t("auth.signIn.form.submit")}
+            ? m.authSignInFormSubmitting()
+            : m.authSignInFormSubmit()}
         </Button>
 
         <p className="text-center text-sm text-muted-foreground">
-          {t("auth.signIn.form.createAccount")}{" "}
+          {m.authSignInFormCreateAccount()}{" "}
           <Button
+            type="button"
             variant="link"
             className="h-auto p-0 font-normal text-[#FF5B5B]"
             onClick={handleSignUp}
           >
-            {t("auth.signIn.form.signUp")}
+            {m.authSignInFormSignUp()}
           </Button>
         </p>
       </form>

@@ -1,19 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { useTranslation } from "~/i18n/client";
+import * as m from "~/i18n/messages";
 
 export const Route = createFileRoute("/_dashboard/dashboard/")({
   component: HomePage,
 });
 
 function HomePage() {
-  const { t } = useTranslation();
   return (
     <div className="space-y-4">
       <h1 className="text-2xl font-semibold text-foreground">
-        {t("dashboard.title")}
+        {m.dashboardTitle()}
       </h1>
-      <p className="text-muted-foreground">{t("dashboard.welcome")}</p>
+      <p className="text-muted-foreground">{m.dashboardWelcome()}</p>
     </div>
   );
 }

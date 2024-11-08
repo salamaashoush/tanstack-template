@@ -16,7 +16,7 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
-import { useTranslation } from "~/i18n/client";
+import * as m from "~/i18n/messages";
 import { registerSchema } from "~/schema/auth";
 import { register } from "~/server/auth.server";
 import {
@@ -28,14 +28,13 @@ import {
 } from "../ui/select";
 
 export function SignUpForm() {
-  const { t } = useTranslation();
   const router = useRouter();
   const { mutateAsync } = useMutation({
     mutationFn: register,
     mutationKey: ["user/register"],
     onSuccess: async () => {
-      toast(t("auth.signUp.success.title"), {
-        description: t("auth.signUp.success.message"),
+      toast(m.authSignUpSuccessTitle(), {
+        description: m.authSignUpSuccessMessage(),
       });
       await router.invalidate();
       router.navigate({ to: "/dashboard" });
@@ -73,11 +72,12 @@ export function SignUpForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-foreground">
-                {t("auth.signUp.form.email")}
+                {m.authSignUpFormEmail()}
               </FormLabel>
               <FormControl>
                 <Input
-                  placeholder={t("auth.signUp.form.emailPlaceholder")}
+                  type="email"
+                  placeholder={m.authSignUpFormEmailPlaceholder()}
                   autoComplete="email"
                   {...field}
                 />
@@ -92,11 +92,11 @@ export function SignUpForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-foreground">
-                {t("auth.signUp.form.name")}
+                {m.authSignUpFormName()}
               </FormLabel>
               <FormControl>
                 <Input
-                  placeholder={t("auth.signUp.form.namePlaceholder")}
+                  placeholder={m.authSignUpFormNamePlaceholder()}
                   className="border-border bg-muted/50 text-foreground placeholder:text-neutral-600"
                   autoComplete="username"
                   {...field}
@@ -113,15 +113,13 @@ export function SignUpForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-foreground" htmlFor="mobile">
-                {t("auth.signUp.form.mobile")}
+                {m.authSignUpFormMobile()}
               </FormLabel>
               <div className="flex gap-2">
                 <FormControl>
                   <Select defaultValue="+20">
                     <SelectTrigger className="w-[80px] border-border bg-muted/50 text-foreground">
-                      <SelectValue
-                        placeholder={t("auth.signUp.form.phoneCode")}
-                      />
+                      <SelectValue placeholder={m.authSignUpFormPhoneCode()} />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="+1">+1</SelectItem>
@@ -136,7 +134,7 @@ export function SignUpForm() {
                     <Input
                       id="mobile"
                       type="tel"
-                      placeholder={t("auth.signUp.form.mobilePlaceholder")}
+                      placeholder={m.authSignUpFormMobilePlaceholder()}
                       className="border-border bg-muted/50 text-foreground placeholder:text-neutral-600"
                       autoComplete="tel"
                       {...field}
@@ -154,12 +152,12 @@ export function SignUpForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-foreground">
-                {t("auth.signUp.form.company")}
+                {m.authSignUpFormCompany()}
               </FormLabel>
               <FormControl>
                 <Input
                   type="text"
-                  placeholder={t("auth.signUp.form.companyPlaceholder")}
+                  placeholder={m.authSignUpFormCompanyPlaceholder()}
                   className="border-border bg-muted/50 text-foreground placeholder:text-neutral-600"
                   {...field}
                 />
@@ -174,12 +172,12 @@ export function SignUpForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-foreground">
-                {t("auth.signUp.form.jobTitle")}
+                {m.authSignUpFormJobTitle()}
               </FormLabel>
               <FormControl>
                 <Input
                   type="text"
-                  placeholder={t("auth.signUp.form.jobTitlePlaceholder")}
+                  placeholder={m.authSignUpFormJobTitlePlaceholder()}
                   className="border-border bg-muted/50 text-foreground placeholder:text-neutral-600"
                   {...field}
                 />
@@ -194,7 +192,7 @@ export function SignUpForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-foreground">
-                {t("auth.signUp.form.password")}
+                {m.authSignUpFormPassword()}
               </FormLabel>
               <FormControl>
                 <Input
@@ -214,7 +212,7 @@ export function SignUpForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-foreground">
-                {t("auth.signUp.form.confirmPassword")}
+                {m.authSignUpFormConfirmPassword()}
               </FormLabel>
               <FormControl>
                 <Input
@@ -234,18 +232,19 @@ export function SignUpForm() {
           disabled={isSubmitting}
         >
           {isSubmitting
-            ? t("auth.signUp.form.submitting")
-            : t("auth.signUp.form.submit")}
+            ? m.authSignUpFormSubmitting()
+            : m.authSignUpFormSubmit()}
         </Button>
 
         <p className="text-center text-sm text-muted-foreground">
-          {t("auth.signUp.form.haveAccount")}{" "}
+          {m.authSignUpFormHaveAccount()}{" "}
           <Button
+            type="button"
             variant="link"
             className="h-auto p-0 font-medium text-[#FF5B5B]"
             onClick={handleSignIn}
           >
-            {t("auth.signUp.form.signIn")}
+            {m.authSignUpFormSignIn()}
           </Button>
         </p>
       </form>

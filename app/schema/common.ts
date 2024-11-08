@@ -1,33 +1,33 @@
 import * as v from "valibot";
 
-import { t } from "~/i18n/client";
+import * as m from "~/i18n/messages";
 
 export const emailSchema = v.pipe(
-  v.string(t("validation.required")),
-  v.email(t("validation.email")),
+  v.string(m.validationRequired()),
+  v.email(m.validationEmail()),
 );
 
 export const passwordSchema = v.pipe(
-  v.string(t("validation.required")),
-  v.minLength(8, t("validation.minLength", { length: 8 })),
+  v.string(m.validationRequired()),
+  v.minLength(8, m.validationMinLength({ count: 8 })),
 );
 
 export const usernameSchema = v.pipe(
-  v.string(t("validation.required")),
-  v.minLength(3, t("validation.minLength", { length: 3 })),
+  v.string(m.validationRequired()),
+  v.minLength(3, m.validationMinLength({ count: 3 })),
 );
 
 export const mobileNumberSchema = v.pipe(
-  v.string(t("validation.required")),
-  v.minLength(10, t("validation.minLength", { length: 10 })),
+  v.string(m.validationRequired()),
+  v.minLength(10, m.validationMinLength({ count: 10 })),
 );
 
 export const companySchema = v.pipe(
-  v.string(t("validation.required")),
-  v.minLength(2, t("validation.minLength", { length: 2 })),
+  v.string(m.validationRequired()),
+  v.minLength(2, m.validationMinLength({ count: 2 })),
 );
 
 export const jobTitleSchema = v.pipe(
-  v.string(t("validation.required")),
-  v.minLength(2, t("validation.minLength", { length: 2 })),
+  v.string(m.validationRequired()),
+  v.minLength(2, m.validationMinLength({ count: 2 })),
 );

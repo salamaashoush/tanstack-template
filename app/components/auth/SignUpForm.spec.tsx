@@ -2,7 +2,7 @@ import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { t } from "~/i18n/client";
+import * as m from "~/i18n/messages";
 import { render } from "~/testUtils";
 import { SignUpForm } from "./SignUpForm";
 
@@ -25,29 +25,23 @@ describe("SignUpForm", () => {
   it("renders signup form correctly", async () => {
     render(<SignUpForm />);
 
+    expect(screen.getByLabelText(m.authSignUpFormEmail())).toBeInTheDocument();
     expect(
-      screen.getByLabelText(t("auth.signUp.form.email")),
+      screen.getByLabelText(m.authSignUpFormCompany()),
     ).toBeInTheDocument();
     expect(
-      screen.getByLabelText(t("auth.signUp.form.company")),
+      screen.getByLabelText(m.authSignUpFormJobTitle()),
+    ).toBeInTheDocument();
+    expect(screen.getByLabelText(m.authSignUpFormMobile())).toBeInTheDocument();
+    expect(screen.getByLabelText(m.authSignUpFormName())).toBeInTheDocument();
+    expect(
+      screen.getByLabelText(m.authSignUpFormPassword()),
     ).toBeInTheDocument();
     expect(
-      screen.getByLabelText(t("auth.signUp.form.jobTitle")),
+      screen.getByLabelText(m.authSignUpFormConfirmPassword()),
     ).toBeInTheDocument();
     expect(
-      screen.getByLabelText(t("auth.signUp.form.mobile")),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByLabelText(t("auth.signUp.form.name")),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByLabelText(t("auth.signUp.form.password")),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByLabelText(t("auth.signUp.form.confirmPassword")),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: t("auth.signUp.form.submit") }),
+      screen.getByRole("button", { name: m.authSignUpFormSubmit() }),
     ).toBeInTheDocument();
   });
 
@@ -55,31 +49,30 @@ describe("SignUpForm", () => {
     render(<SignUpForm />);
 
     const submitButton = screen.getByRole("button", {
-      name: t("auth.signUp.form.submit"),
+      name: m.authSignUpFormSubmit(),
     });
     await userEvent.click(submitButton);
 
-    expect(await screen.findByText(t("validation.email"))).toBeInTheDocument();
+    expect(await screen.findByText(m.validationEmail())).toBeInTheDocument();
     expect(
-      (await screen.findAllByText(t("validation.minLength", { length: 2 })))
-        .length,
+      (await screen.findAllByText(m.validationMinLength({ count: 2 }))).length,
     ).toBe(2);
     expect(
-      await screen.findByText(t("validation.minLength", { length: 10 })),
+      await screen.findByText(m.validationMinLength({ count: 10 })),
     ).toBeInTheDocument();
   });
 
   it("submits form with valid data", async () => {
     render(<SignUpForm />);
 
-    const emailInput = screen.getByLabelText(t("auth.signUp.form.email"));
-    const nameInput = screen.getByLabelText(t("auth.signUp.form.name"));
-    const mobileInput = screen.getByLabelText(t("auth.signUp.form.mobile"));
-    const companyInput = screen.getByLabelText(t("auth.signUp.form.company"));
-    const jobTitleInput = screen.getByLabelText(t("auth.signUp.form.jobTitle"));
-    const passwordInput = screen.getByLabelText(t("auth.signUp.form.password"));
+    const emailInput = screen.getByLabelText(m.authSignUpFormEmail());
+    const nameInput = screen.getByLabelText(m.authSignUpFormName());
+    const mobileInput = screen.getByLabelText(m.authSignUpFormMobile());
+    const companyInput = screen.getByLabelText(m.authSignUpFormCompany());
+    const jobTitleInput = screen.getByLabelText(m.authSignUpFormJobTitle());
+    const passwordInput = screen.getByLabelText(m.authSignUpFormPassword());
     const confirmPasswordInput = screen.getByLabelText(
-      t("auth.signUp.form.confirmPassword"),
+      m.authSignUpFormConfirmPassword(),
     );
 
     await userEvent.type(emailInput, "test@example.com");
@@ -91,17 +84,17 @@ describe("SignUpForm", () => {
     await userEvent.type(confirmPasswordInput, "password123");
 
     const submitButton = screen.getByRole("button", {
-      name: t("auth.signUp.form.submit"),
+      name: m.authSignUpFormSubmit(),
     });
     await userEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(screen.queryByText(t("validation.email"))).not.toBeInTheDocument();
+      expect(screen.queryByText(m.validationEmail())).not.toBeInTheDocument();
       expect(
-        screen.queryByText(t("validation.minLength", { length: 2 })),
+        screen.queryByText(m.validationMinLength({ count: 2 })),
       ).not.toBeInTheDocument();
       expect(
-        screen.queryByText(t("validation.minLength", { length: 10 })),
+        screen.queryByText(m.validationMinLength({ count: 10 })),
       ).not.toBeInTheDocument();
     });
   });
@@ -110,7 +103,7 @@ describe("SignUpForm", () => {
     render(<SignUpForm />);
 
     const loginLink = screen.getByRole("button", {
-      name: t("auth.signUp.form.signIn"),
+      name: m.authSignUpFormSignIn(),
     });
     await userEvent.click(loginLink);
 
@@ -120,14 +113,14 @@ describe("SignUpForm", () => {
   it("validates email format", async () => {
     render(<SignUpForm />);
 
-    const emailInput = screen.getByLabelText(t("auth.signUp.form.email"));
+    const emailInput = screen.getByLabelText(m.authSignUpFormEmail());
     await userEvent.type(emailInput, "invalid-email");
 
     const submitButton = screen.getByRole("button", {
-      name: t("auth.signUp.form.submit"),
+      name: m.authSignUpFormSubmit(),
     });
     await userEvent.click(submitButton);
 
-    expect(await screen.findByText(t("validation.email"))).toBeInTheDocument();
+    expect(await screen.findByText(m.validationEmail())).toBeInTheDocument();
   });
 });

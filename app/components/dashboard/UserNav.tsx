@@ -13,11 +13,10 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { useUserProfile } from "~/hooks/useUserProfile";
-import { useTranslation } from "~/i18n/client";
+import * as m from "~/i18n/messages";
 import { logout } from "~/server/auth.server";
 
 export function UserNav() {
-  const { t } = useTranslation();
   const { data } = useUserProfile();
   const router = useRouter();
   const handleLogout = useCallback(async () => {
@@ -58,11 +57,11 @@ export function UserNav() {
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>{t("userNav.profile")}</DropdownMenuItem>
-          <DropdownMenuItem>{t("userNav.settings")}</DropdownMenuItem>
+          <DropdownMenuItem>{m.userNavProfile()}</DropdownMenuItem>
+          <DropdownMenuItem>{m.userNavSettings()}</DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem className="text-destructive" onClick={handleLogout}>
-            {t("userNav.logout")}
+            {m.userNavLogout()}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

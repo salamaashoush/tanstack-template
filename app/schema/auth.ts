@@ -1,6 +1,6 @@
 import * as v from "valibot";
 
-import { t } from "~/i18n/client";
+import * as m from "~/i18n/messages";
 import {
   companySchema,
   emailSchema,
@@ -35,7 +35,7 @@ export const registerSchema = v.pipe(
     v.partialCheck(
       [["password"], ["confirmPassword"]],
       (input) => input.password === input.confirmPassword,
-      t("validation.passwordMismatch"),
+      m.validationPasswordMismatch(),
     ),
     ["confirmPassword"],
   ),

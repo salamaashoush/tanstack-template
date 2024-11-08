@@ -1,4 +1,4 @@
-import { useTranslation } from "~/i18n/client";
+import * as m from "~/i18n/messages";
 import { cn } from "~/utils/cn";
 
 const sizes = {
@@ -20,7 +20,6 @@ export function Logo({
   animate = false,
   size = "md",
 }: LogoProps) {
-  const { t } = useTranslation();
   return (
     <div className={cn("inline-flex flex-col items-center", className)}>
       <div className={cn("relative", sizes[size])}>
@@ -55,7 +54,7 @@ export function Logo({
       </div>
       {showText && (
         <span className="mt-1 text-sm font-medium text-foreground">
-          {t("common.companyName")}
+          {m.commonCompanyName()}
         </span>
       )}
     </div>

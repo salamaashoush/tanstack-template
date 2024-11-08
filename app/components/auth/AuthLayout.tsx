@@ -1,14 +1,13 @@
 import type { ReactNode } from "react";
 
 import { Logo } from "~/components/common/Logo";
-import { useTranslation } from "~/i18n/client";
+import * as m from "~/i18n/messages";
 
 interface AuthLayoutProps {
   children: ReactNode;
 }
 
 export function AuthLayout({ children }: AuthLayoutProps) {
-  const { t } = useTranslation();
   const year = new Date().getFullYear();
   return (
     <div className="grid min-h-screen bg-background lg:grid-cols-2">
@@ -18,7 +17,7 @@ export function AuthLayout({ children }: AuthLayoutProps) {
         </div>
         <div className="p-8">
           <p className="text-center text-xs text-muted-foreground">
-            {t("common.copyRights", { year })}
+            {m.commonCopyRights({ year })}
           </p>
         </div>
       </div>
@@ -26,11 +25,9 @@ export function AuthLayout({ children }: AuthLayoutProps) {
         <div className="w-full max-w-[480px] text-center">
           <Logo className="mx-auto mb-12" />
           <h1 className="mb-6 text-[56px] font-semibold leading-[1.1] text-foreground">
-            {t("auth.layout.title")}
+            {m.authLayoutTitle()}
           </h1>
-          <p className="text-lg text-muted-foreground">
-            {t("auth.layout.body")}
-          </p>
+          <p className="text-lg text-muted-foreground">{m.authLayoutBody()}</p>
         </div>
       </div>
     </div>

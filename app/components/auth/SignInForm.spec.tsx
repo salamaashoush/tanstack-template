@@ -2,7 +2,7 @@ import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { t } from "~/i18n/client";
+import * as m from "~/i18n/messages";
 import { render } from "~/testUtils";
 import { SignInForm } from "./SignInForm";
 
@@ -39,9 +39,9 @@ describe("SignForm", () => {
     const submitButton = screen.getByRole("button", { name: /sign in/i });
     await userEvent.click(submitButton);
 
-    expect(await screen.findByText(t("validation.email"))).toBeInTheDocument();
+    expect(await screen.findByText(m.validationEmail())).toBeInTheDocument();
     expect(
-      await screen.findByText(t("validation.minLength", { length: 8 })),
+      await screen.findByText(m.validationMinLength({ count: 8 })),
     ).toBeInTheDocument();
   });
 
@@ -69,7 +69,7 @@ describe("SignForm", () => {
     await userEvent.click(submitButton);
 
     expect(
-      await screen.findByText(t("validation.minLength", { length: 8 })),
+      await screen.findByText(m.validationMinLength({ count: 8 })),
     ).toBeInTheDocument();
   });
 
@@ -86,9 +86,9 @@ describe("SignForm", () => {
     await userEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(screen.queryByText(t("validation.email"))).not.toBeInTheDocument();
+      expect(screen.queryByText(m.validationEmail())).not.toBeInTheDocument();
       expect(
-        screen.queryByText(t("validation.minLength", { length: 8 })),
+        screen.queryByText(m.validationMinLength({ count: 8 })),
       ).not.toBeInTheDocument();
     });
   });

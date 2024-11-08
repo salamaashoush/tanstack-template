@@ -1,6 +1,6 @@
 import type { QueryClient } from "@tanstack/react-query";
 import type { ReactNode } from "react";
-import { lazy, Suspense, useEffect } from "react";
+import { lazy, Suspense } from "react";
 import {
   createRootRouteWithContext,
   Outlet,
@@ -9,10 +9,10 @@ import {
 import { Body, Head, Html, Meta, Scripts } from "@tanstack/start";
 
 import type { AppSession } from "~/utils/session";
-import { ThemeProvider } from "~/components/ThemeProvider";
+import { ColorSchemeProvider } from "~/components/theme/ColorSchemeProvider";
+import { ColorSchemeScript } from "~/components/theme/ColorSchemeScript";
 import { Toaster } from "~/components/ui/sonner";
 import { env } from "~/env";
-import { useTranslation } from "~/i18n/client";
 import { getUserSession } from "~/server/auth.server";
 import appCss from "~/styles/globals.scss?url";
 import { DefaultCatchBoundary } from "../components/DefaultCatchBoundary";
@@ -62,8 +62,8 @@ export const Route = createRootRouteWithContext<AppRouterContext>()({
       content: "width=device-width, initial-scale=1",
     },
     ...seo({
-      title: "TanStack",
-      description: "TanStack is a fullstack TypeScript framework",
+      title: "Fake Company",
+      description: "Fake Company is a fake company.",
     }),
   ],
   links: () => [
@@ -122,24 +122,19 @@ function RootComponent() {
 interface RootDocumentProps {
   children: ReactNode;
 }
+
 function RootDocument({ children }: RootDocumentProps) {
-  const { i18n } = useTranslation();
-
-  useEffect(() => {
-    document.documentElement.lang = i18n.language;
-    document.documentElement.dir = i18n.dir();
-  }, [i18n, i18n.language]);
-
   return (
     <Html>
       <Head>
+        <ColorSchemeScript />
         <Meta />
       </Head>
       <Body>
-        <ThemeProvider defaultTheme="dark">
+        <ColorSchemeProvider defaultColorScheme="dark">
           {children}
           <Toaster />
-        </ThemeProvider>
+        </ColorSchemeProvider>
         <ScrollRestoration />
         <Suspense fallback={null}>
           <TanStackRouterDevtools position="bottom-right" />
