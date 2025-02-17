@@ -3,3 +3,9 @@
 pnpm-lock.yaml
 **/generated
 **/routeTree.gen.ts
+app/i18n
+
+.output
+.vinxi
+.amplify-hosting
+.turbo

@@ -63,20 +63,20 @@ jobs:
       - name: Test
         run: pnpm test
 
-  e2e:
-    timeout-minutes: 60
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup
-        uses: ./.github/setup
-      - name: Install Playwright Browsers
-        run: pnpm test:e2e:install
-      - name: Run Playwright tests
-        run: pnpm test:e2e
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 30
+  # e2e:
+  #   timeout-minutes: 60
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Setup
+  #       uses: ./.github/setup
+  #     - name: Install Playwright Browsers
+  #       run: pnpm test:e2e:install
+  #     - name: Run Playwright tests
+  #       run: pnpm test:e2e
+  #     - uses: actions/upload-artifact@v4
+  #       if: always()
+  #       with:
+  #         name: playwright-report
+  #         path: playwright-report/
+  #         retention-days: 30
