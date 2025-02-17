@@ -1,4 +1,5 @@
 import { Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
 
 import { Button } from "~/components/ui/button";
 import {
@@ -8,10 +9,9 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import * as m from "~/i18n/messages";
-import { useColorScheme } from "./ColorSchemeProvider";
 
 export function ThemeToggle() {
-  const { setColorScheme } = useColorScheme();
+  const { setTheme } = useTheme();
 
   return (
     <DropdownMenu>
@@ -21,19 +21,19 @@ export function ThemeToggle() {
           size="icon"
           className="text-muted-foreground hover:bg-muted hover:text-foreground"
         >
-          <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-          <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+          <Sun className="h-5 w-5 scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
+          <Moon className="absolute h-5 w-5 scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
           <span className="sr-only">{m.themeTitle()}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setColorScheme("light")}>
+        <DropdownMenuItem onClick={() => setTheme("light")}>
           {m.themeLight()}
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setColorScheme("dark")}>
+        <DropdownMenuItem onClick={() => setTheme("dark")}>
           {m.themeDark()}
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setColorScheme("system")}>
+        <DropdownMenuItem onClick={() => setTheme("system")}>
           {m.themeSystem()}
         </DropdownMenuItem>
       </DropdownMenuContent>

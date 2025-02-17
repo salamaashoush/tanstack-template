@@ -54,9 +54,7 @@ describe("SignForm", () => {
     const submitButton = screen.getByRole("button", { name: /sign in/i });
     await userEvent.click(submitButton);
 
-    expect(
-      await screen.findByText(/please enter a valid email/i),
-    ).toBeInTheDocument();
+    expect(await screen.findByText(m.validationEmail())).toBeInTheDocument();
   });
 
   it("shows validation error for short password", async () => {

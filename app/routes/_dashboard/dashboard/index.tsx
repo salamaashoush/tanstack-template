@@ -9,7 +9,7 @@ export const Route = createFileRoute("/_dashboard/dashboard/")({
 function HomePage() {
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-semibold text-foreground">
+      <h1 className="text-foreground text-2xl font-semibold">
         {m.dashboardTitle()}
       </h1>
       <p className="text-muted-foreground">{m.dashboardWelcome()}</p>

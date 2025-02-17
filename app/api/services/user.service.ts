@@ -1,11 +1,8 @@
 import type { AxiosInstance } from "axios";
 
+import type { UserProfile } from "../models";
 import type { LoginSchemaOutput, RegisterSchemaOutput } from "~/schema/auth";
 
-export type UserProfile = Omit<
-  RegisterSchemaOutput,
-  "password" | "confirmPassword"
->;
 const fakeUser: RegisterSchemaOutput = {
   email: "fake@fake.com",
   password: "fake12345",

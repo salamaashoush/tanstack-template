@@ -2,6 +2,7 @@ import { useCallback } from "react";
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/start";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -30,7 +31,7 @@ import {
 export function SignUpForm() {
   const router = useRouter();
   const { mutateAsync } = useMutation({
-    mutationFn: register,
+    mutationFn: useServerFn(register),
     mutationKey: ["user/register"],
     onSuccess: async () => {
       toast(m.authSignUpSuccessTitle(), {
@@ -55,7 +56,7 @@ export function SignUpForm() {
   });
 
   const onSubmit = async (data: RegisterSchemaOutput) => {
-    await mutateAsync(data);
+    await mutateAsync({ data });
   };
 
   const isSubmitting = form.formState.isSubmitting;
@@ -76,7 +77,8 @@ export function SignUpForm() {
               </FormLabel>
               <FormControl>
                 <Input
-                  type="email"
+                  type="text"
+                  inputMode="email"
                   placeholder={m.authSignUpFormEmailPlaceholder()}
                   autoComplete="email"
                   {...field}
@@ -118,7 +120,7 @@ export function SignUpForm() {
               <div className="flex gap-2">
                 <FormControl>
                   <Select defaultValue="+20">
-                    <SelectTrigger className="w-[80px] border-border bg-muted/50 text-foreground">
+                    <SelectTrigger className="border-border bg-muted/50 text-foreground w-[80px]">
                       <SelectValue placeholder={m.authSignUpFormPhoneCode()} />
                     </SelectTrigger>
                     <SelectContent>
@@ -139,7 +141,7 @@ export function SignUpForm() {
                       autoComplete="tel"
                       {...field}
                     />
-                    <FormMessage className="mt-1 text-sm text-destructive" />
+                    <FormMessage className="text-destructive mt-1 text-sm" />
                   </div>
                 </FormControl>
               </div>
@@ -228,7 +230,7 @@ export function SignUpForm() {
         />
         <Button
           type="submit"
-          className="w-full bg-[#FF5B5B] font-medium text-foreground hover:bg-[#FF4D4D]"
+          className="text-foreground w-full bg-[#FF5B5B] font-medium hover:bg-[#FF4D4D]"
           disabled={isSubmitting}
         >
           {isSubmitting
@@ -236,7 +238,7 @@ export function SignUpForm() {
             : m.authSignUpFormSubmit()}
         </Button>
 
-        <p className="text-center text-sm text-muted-foreground">
+        <p className="text-muted-foreground text-center text-sm">
           {m.authSignUpFormHaveAccount()}{" "}
           <Button
             type="button"

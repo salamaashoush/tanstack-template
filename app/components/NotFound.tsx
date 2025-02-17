@@ -10,13 +10,13 @@ export function NotFound({ children }: PropsWithChildren) {
       <p className="flex flex-wrap items-center gap-2">
         <button
           onClick={() => window.history.back()}
-          className="rounded bg-emerald-500 px-2 py-1 text-sm font-black uppercase text-foreground"
+          className="text-foreground rounded bg-emerald-500 px-2 py-1 text-sm font-black uppercase"
         >
           Go back
         </button>
         <Link
           to="/"
-          className="rounded bg-cyan-600 px-2 py-1 text-sm font-black uppercase text-foreground"
+          className="text-foreground rounded bg-cyan-600 px-2 py-1 text-sm font-black uppercase"
         >
           Start Over
         </Link>

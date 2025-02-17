@@ -11,7 +11,7 @@ export default function SignUpPage() {
   return (
     <>
       <div className="mb-8">
-        <h1 className="mb-2 text-[32px] font-semibold text-foreground">
+        <h1 className="text-foreground mb-2 text-[32px] font-semibold">
           {m.authSignUpTitle()}
         </h1>
         <p className="text-muted-foreground">{m.authSignUpBody()}</p>

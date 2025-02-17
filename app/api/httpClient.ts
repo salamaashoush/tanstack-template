@@ -8,7 +8,7 @@ import { getUserSession } from "~/server/auth.server";
 import { getErrorMessageFromResponse } from "~/utils/axios";
 
 export const httpClient = axios.create({
-  baseURL: env.VITE_API_URL,
+  baseURL: env.API_URL,
   headers: {
     "Content-Type": "application/json",
   },

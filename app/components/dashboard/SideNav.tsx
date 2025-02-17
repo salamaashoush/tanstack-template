@@ -1,11 +1,4 @@
-import {
-  BarChart3,
-  Binoculars,
-  Shield,
-  Sword,
-  Users,
-  Wrench,
-} from "lucide-react";
+import { BarChart3, Sword, Users, Wrench } from "lucide-react";
 
 import { Button } from "~/components/ui/button";
 import { cn } from "~/utils/cn";
@@ -17,29 +10,19 @@ const items = [
     href: "/dashboard",
   },
   {
-    title: "Observation",
-    icon: Binoculars,
-    href: "/observation",
-  },
-  {
-    title: "Threats",
-    icon: Shield,
-    href: "/threats",
-  },
-  {
-    title: "Arsenal",
-    icon: Sword,
-    href: "/arsenal",
-  },
-  {
-    title: "Techniques",
-    icon: Wrench,
-    href: "/techniques",
-  },
-  {
-    title: "Entities",
+    title: "Users",
     icon: Users,
-    href: "/entities",
+    href: "/users",
+  },
+  {
+    title: "Settings",
+    icon: Wrench,
+    href: "/settings",
+  },
+  {
+    title: "Tools",
+    icon: Sword,
+    href: "/tools",
   },
 ];
 
@@ -51,7 +34,7 @@ export function SideNav() {
           key={item.href}
           variant="ghost"
           className={cn(
-            "h-12 gap-2 rounded-none text-muted-foreground hover:bg-muted hover:text-foreground",
+            "text-muted-foreground hover:bg-muted hover:text-foreground h-12 gap-2 rounded-none",
             item.href === "/threats" && "bg-muted text-foreground",
           )}
         >

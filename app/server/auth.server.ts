@@ -2,47 +2,30 @@ import { createServerFn } from "@tanstack/start";
 import * as v from "valibot";
 import { setResponseStatus } from "vinxi/http";
 
-import type { RegisterSchemaOutput } from "~/schema/auth";
+import type { LoginSchemaInput, RegisterSchemaOutput } from "~/schema/auth";
 import type { AppSession } from "~/utils/session";
 import { getUserService } from "~/api/index";
-import { loginSchema } from "~/schema/auth";
-import { useAppSession } from "~/utils/session";
+import { loginSchema, registerSchema } from "~/schema/auth";
+import { getAppSession, isAuthenticatedGuard } from "~/utils/session";
 
-export const getUserSession = createServerFn("GET", async () => {
-  // We need to auth on the server so we have access to secure cookies
-  const session = await useAppSession();
-  return session.data;
-});
+export const getUserSession = createServerFn({ method: "GET" }).handler(
+  async () => {
+    // We need to auth on the server so we have access to secure cookies
+    const session = await getAppSession();
+    return session.data;
+  },
+);
 
-type LoginPayload = v.InferInput<typeof loginSchema>;
-export const login = createServerFn("POST", async (payload: LoginPayload) => {
-  try {
-    const session = await useAppSession();
-    const loginPayload = v.parse(loginSchema, payload);
-    const user = await getUserService().login(loginPayload);
-    const sessionData: AppSession = {
-      isAuthenticated: true,
-      user,
-    };
-    await session.update(sessionData);
-    return sessionData;
-  } catch (error) {
-    setResponseStatus(400);
-    throw {
-      message: (error as Error).message,
-    };
-  }
-});
-
-export const register = createServerFn(
-  "POST",
-  async (payload: RegisterSchemaOutput) => {
+export const login = createServerFn({ method: "POST" })
+  .validator((payload: LoginSchemaInput) => v.parse(loginSchema, payload))
+  .handler(async ({ data }) => {
     try {
-      const session = await useAppSession();
-      const user = await getUserService().register(payload);
+      const session = await getAppSession();
+      const user = await getUserService().login(data);
       const sessionData: AppSession = {
         isAuthenticated: true,
         user,
+        accessToken: "fakeAccessToken",
       };
       await session.update(sessionData);
       return sessionData;
@@ -52,29 +35,46 @@ export const register = createServerFn(
         message: (error as Error).message,
       };
     }
-  },
-);
+  });
 
-export const logout = createServerFn("POST", async () => {
-  const session = await useAppSession();
+export const register = createServerFn({ method: "POST" })
+  .validator((payload: RegisterSchemaOutput) =>
+    v.parse(registerSchema, payload),
+  )
+  .handler(async ({ data }) => {
+    try {
+      const session = await getAppSession();
+      const user = await getUserService().register(data);
+      const sessionData: AppSession = {
+        isAuthenticated: true,
+        user,
+        accessToken: "fakeAccessToken",
+      };
+      await session.update(sessionData);
+      return sessionData;
+    } catch (error) {
+      setResponseStatus(400);
+      throw {
+        message: (error as Error).message,
+      };
+    }
+  });
+
+export const logout = createServerFn({ method: "POST" }).handler(async () => {
+  const session = await getAppSession();
   await session.clear();
 });
 
-export const getUserProfile = createServerFn("GET", async () => {
-  const session = await useAppSession();
-  if (!session.data.isAuthenticated) {
-    setResponseStatus(401);
-    throw {
-      message: "Unauthorized",
-    };
-  }
-
-  try {
-    return getUserService().getUserProfile();
-  } catch (error) {
-    setResponseStatus(400);
-    throw {
-      message: (error as Error).message,
-    };
-  }
-});
+export const getUserProfile = createServerFn({ method: "GET" }).handler(
+  async () => {
+    await isAuthenticatedGuard();
+    try {
+      return getUserService().getUserProfile();
+    } catch (error) {
+      setResponseStatus(400);
+      throw {
+        message: (error as Error).message,
+      };
+    }
+  },
+);

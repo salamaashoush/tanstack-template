@@ -3,14 +3,9 @@ import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import { AuthLayout } from "~/components/auth/AuthLayout";
 
 export const Route = createFileRoute("/_auth")({
-  beforeLoad: async ({ context, location }) => {
-    if (context.auth.isAuthenticated) {
-      throw redirect({
-        to: "/dashboard",
-        search: {
-          redirect: location.href,
-        },
-      });
+  beforeLoad: async ({ context }) => {
+    if (context.session?.isAuthenticated) {
+      throw redirect({ to: "/" });
     }
     return context;
   },

@@ -20,23 +20,21 @@ async function updateAuthSecret() {
     // Split data into lines
     const lines = data.split("\n");
 
-    // Find the index of the line containing VITE_SESSION_SECRET, if it exists
-    const index = lines.findIndex((line) =>
-      line.startsWith("VITE_SESSION_SECRET"),
-    );
-    const secretLine = `VITE_SESSION_SECRET='${NEW_SECRET}'`;
+    // Find the index of the line containing SESSION_SECRET, if it exists
+    const index = lines.findIndex((line) => line.startsWith("SESSION_SECRET"));
+    const secretLine = `SESSION_SECRET='${NEW_SECRET}'`;
 
     if (index !== -1) {
       // check if existing value not empty
       const isSet = lines[index].split("=")[1].length > 2;
       if (isSet) {
-        console.log("VITE_SESSION_SECRET already set!");
+        console.log("SESSION_SECRET already set!");
         return;
       }
       // Replace the existing line
       lines[index] = secretLine;
     } else {
-      // Append new VITE_SESSION_SECRET if not found
+      // Append new SESSION_SECRET if not found
       lines.push(secretLine);
     }
 
@@ -45,7 +43,7 @@ async function updateAuthSecret() {
 
     // Write the updated data back to the .env file
     await writeFile(ENV_FILE, updatedData, "utf8");
-    console.log("Updated VITE_SESSION_SECRET in .env file.");
+    console.log("Updated SESSION_SECRET in .env file.");
   } catch (err) {
     console.error("Error reading .env file:", err);
     return;
@@ -58,7 +56,7 @@ async function main() {
     await cp(ENV_EXAMPLE_FILE, ENV_FILE);
     console.log("Copied .env.example to .env");
   }
-  // Update the VITE_SESSION_SECRET in the .env file
+  // Update the SESSION_SECRET in the .env file
   await updateAuthSecret();
 }
 

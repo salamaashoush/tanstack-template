@@ -11,7 +11,6 @@ import { cn } from "~/utils/cn";
 const items = [
   { title: "Fake Company", href: "/" },
   { title: "News", href: "/news" },
-  { title: "Learning", href: "/learning" },
 ];
 
 export function MainNav() {
@@ -26,7 +25,7 @@ export function MainNav() {
                 href={item.href}
                 className={cn(
                   navigationMenuTriggerStyle(),
-                  "bg-transparent text-muted-foreground hover:bg-muted hover:text-foreground",
+                  "text-muted-foreground hover:bg-muted hover:text-foreground bg-transparent",
                 )}
               >
                 {item.title}

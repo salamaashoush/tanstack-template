@@ -24,7 +24,7 @@ export function Logo({
     <div className={cn("inline-flex flex-col items-center", className)}>
       <div className={cn("relative", sizes[size])}>
         <div className="absolute inset-0">
-          <svg viewBox="0 0 100 100" className="h-full w-full text-destructive">
+          <svg viewBox="0 0 100 100" className="text-destructive h-full w-full">
             <circle
               cx="50"
               cy="50"
@@ -53,7 +53,7 @@ export function Logo({
         </div>
       </div>
       {showText && (
-        <span className="mt-1 text-sm font-medium text-foreground">
+        <span className="text-foreground mt-1 text-sm font-medium">
           {m.commonCompanyName()}
         </span>
       )}

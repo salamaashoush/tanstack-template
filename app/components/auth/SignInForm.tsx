@@ -2,6 +2,7 @@ import { useCallback } from "react";
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/start";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -23,7 +24,7 @@ import { login } from "~/server/auth.server";
 export function SignInForm() {
   const router = useRouter();
   const { mutateAsync } = useMutation({
-    mutationFn: login,
+    mutationFn: useServerFn(login),
     mutationKey: ["user/login"],
     onSuccess: async () => {
       toast(m.authSignInSuccessTitle(), {
@@ -43,7 +44,9 @@ export function SignInForm() {
   });
 
   const onSubmit = async (data: LoginSchemaOutput) => {
-    await mutateAsync(data);
+    await mutateAsync({
+      data,
+    });
   };
   const isSubmitting = form.formState.isSubmitting;
   const handleSignUp = useCallback(() => {
@@ -63,14 +66,15 @@ export function SignInForm() {
               </FormLabel>
               <FormControl>
                 <Input
-                  type="email"
+                  type="text"
+                  inputMode="email"
                   className="border-border bg-muted/50 text-foreground placeholder:text-neutral-600"
                   placeholder="Enter your email"
                   autoComplete="username"
                   {...field}
                 />
               </FormControl>
-              <FormMessage className="text-sm text-destructive" />
+              <FormMessage className="text-destructive text-sm" />
             </FormItem>
           )}
         />
@@ -89,21 +93,21 @@ export function SignInForm() {
                   {...field}
                 />
               </FormControl>
-              <FormMessage className="text-sm text-destructive" />
+              <FormMessage className="text-destructive text-sm" />
             </FormItem>
           )}
         />
         <div className="text-left">
           <Button
             variant="link"
-            className="h-auto p-0 font-medium text-muted-foreground hover:text-foreground"
+            className="text-muted-foreground hover:text-foreground h-auto p-0 font-medium"
           >
             {m.authSignInFormForgotPassword()}
           </Button>
         </div>
         <Button
           type="submit"
-          className="w-full bg-[#FF5B5B] font-medium text-foreground hover:bg-[#FF4D4D]"
+          className="text-foreground w-full bg-[#FF5B5B] font-medium hover:bg-[#FF4D4D]"
           disabled={isSubmitting}
         >
           {isSubmitting
@@ -111,7 +115,7 @@ export function SignInForm() {
             : m.authSignInFormSubmit()}
         </Button>
 
-        <p className="text-center text-sm text-muted-foreground">
+        <p className="text-muted-foreground text-center text-sm">
           {m.authSignInFormCreateAccount()}{" "}
           <Button
             type="button"
