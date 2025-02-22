@@ -16,12 +16,5 @@ export default defineConfig({
         outdir: "./app/i18n", //Where you want the generated files to be placed
       }),
     ],
-    css: {
-      preprocessorOptions: {
-        scss: {
-          api: "modern-compiler",
-        },
-      },
-    },
   },
 });
