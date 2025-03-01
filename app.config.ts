@@ -1,5 +1,5 @@
 import { paraglide } from "@inlang/paraglide-vite";
-import tailwindcss from "@tailwindcss/vite";
+// import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "@tanstack/start/config";
 import viteTsConfigPaths from "vite-tsconfig-paths";
 
@@ -9,7 +9,8 @@ export default defineConfig({
   },
   vite: {
     plugins: [
-      tailwindcss(),
+      // TODO: use tailwindcss plugin instead of postcss once tailwindcss/tanstack-start issue is fixed
+      // tailwindcss(),
       viteTsConfigPaths({ projects: ["./tsconfig.json"] }),
       paraglide({
         project: "./project.inlang", //Path to your inlang project
