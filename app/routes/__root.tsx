@@ -17,7 +17,7 @@ import { getUserProfileQuery } from "~/queries/user";
 import { queryClient } from "~/queryClient";
 import { getUserSession } from "~/server/auth.server";
 import appCss from "~/styles/globals.css?url";
-import { detectLanguageOnClient, getLocaleDetectorScript } from "~/utils/i18n";
+import { detectLanguageOnClient } from "~/utils/i18n";
 import { DefaultCatchBoundary } from "../components/DefaultCatchBoundary";
 import { NotFound } from "../components/NotFound";
 import { seo } from "../utils/seo";
@@ -27,26 +27,24 @@ if (typeof window !== "undefined") {
   setLanguageTag(language);
 }
 
-const TanStackRouterDevtools =
-  env.NODE_ENV === "production"
-    ? () => null // Render nothing in production
-    : lazy(() =>
-        // Lazy load in development
-        import("@tanstack/router-devtools").then((res) => ({
-          default: res.TanStackRouterDevtools,
-          // For Embedded Mode
-          // default: res.TanStackRouterDevtoolsPanel
-        })),
-      );
+const TanStackRouterDevtools = env.PROD
+  ? () => null // Render nothing in production
+  : lazy(() =>
+      // Lazy load in development
+      import("@tanstack/router-devtools").then((res) => ({
+        default: res.TanStackRouterDevtools,
+        // For Embedded Mode
+        // default: res.TanStackRouterDevtoolsPanel
+      })),
+    );
 
-const ReactQueryDevtools =
-  env.NODE_ENV === "production"
-    ? () => null
-    : lazy(() =>
-        import("@tanstack/react-query-devtools").then((res) => ({
-          default: res.ReactQueryDevtools,
-        })),
-      );
+const ReactQueryDevtools = env.PROD
+  ? () => null
+  : lazy(() =>
+      import("@tanstack/react-query-devtools").then((res) => ({
+        default: res.ReactQueryDevtools,
+      })),
+    );
 
 interface AppRouterContext {
   session?: AppSession;
@@ -69,26 +67,6 @@ export const Route = createRootRouteWithContext<AppRouterContext>()({
     }
   },
   head: () => ({
-    // TODO: remove once this is fixed https://github.com/TanStack/router/issues/1992
-    scripts: [
-      ...(env.DEV
-        ? [
-            {
-              type: "module",
-              children: `import RefreshRuntime from "/_build/@react-refresh";
-      RefreshRuntime.injectIntoGlobalHook(window)
-      window.$RefreshReg$ = () => {}
-      window.$RefreshSig$ = () => (type) => type`,
-            },
-          ]
-        : []),
-      {
-        type: "module",
-        children: getLocaleDetectorScript({
-          defaultLanguage: languageTag(),
-        }),
-      },
-    ],
     meta: [
       {
         charSet: "utf-8",
