@@ -50,7 +50,8 @@
     "sonner": "^2.0.1",
     "superjson": "^2.2.2",
     "tailwind-merge": "^3.0.2",
-    "valibot": "^1.0.0-rc.2"
+    "valibot": "1.0.0-rc.2",
+    "valibot-env": "^0.2.1"
   },
   "devDependencies": {
     "@eslint/compat": "^1.2.7",
