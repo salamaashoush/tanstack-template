@@ -12,26 +12,26 @@ import { ThemeProvider } from "next-themes";
 import type { AppSession } from "~/utils/session";
 import { Toaster } from "~/components/ui/sonner";
 import { env } from "~/env";
-import { languageTag, setLanguageTag } from "~/i18n/runtime";
+import { getLocale, setLocale } from "~/i18n/runtime";
 import { getUserProfileQuery } from "~/queries/user";
 import { queryClient } from "~/queryClient";
 import { getUserSession } from "~/server/auth.server";
 import appCss from "~/styles/globals.css?url";
-import { detectLanguageOnClient } from "~/utils/i18n";
+import { useI18n } from "~/utils/useI18n";
 import { DefaultCatchBoundary } from "../components/DefaultCatchBoundary";
 import { NotFound } from "../components/NotFound";
 import { seo } from "../utils/seo";
 
 if (typeof window !== "undefined") {
-  const language = detectLanguageOnClient();
-  setLanguageTag(language);
+  const locale = getLocale();
+  setLocale(locale);
 }
 
 const TanStackRouterDevtools = env.PROD
   ? () => null // Render nothing in production
   : lazy(() =>
       // Lazy load in development
-      import("@tanstack/router-devtools").then((res) => ({
+      import("@tanstack/react-router-devtools").then((res) => ({
         default: res.TanStackRouterDevtools,
         // For Embedded Mode
         // default: res.TanStackRouterDevtoolsPanel
@@ -140,14 +140,10 @@ interface RootDocumentProps {
 }
 
 function RootDocument({ children }: RootDocumentProps) {
-  const lang = languageTag();
+  const { currentLanguage, dir } = useI18n();
 
   return (
-    <html
-      suppressHydrationWarning
-      lang={lang}
-      dir={lang.startsWith("ar") ? "rtl" : "ltr"}
-    >
+    <html suppressHydrationWarning lang={currentLanguage} dir={dir}>
       <head>
         <HeadContent />
       </head>
