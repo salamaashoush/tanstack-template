@@ -56,7 +56,8 @@ This project is a template for building applications using the Tanstack framewor
 - **`pnpm format`**: Checks the code formatting using Prettier.
 - **`pnpm format:write`**: Formats the code using Prettier.
 - **`pnpm type-check`**: Runs TypeScript type checking.
-
+- **`pnpm verify`**: Formats the code using Prettier, runs ESLint to check for linting errors, and runs TypeScript type checking.
+  
 ## Project Structure
 
 - **app**: Contains the main application code.
