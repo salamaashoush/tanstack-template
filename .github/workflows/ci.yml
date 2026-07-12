@@ -104,6 +104,15 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+      # A misconfigured container must refuse to start, not boot and 500. Easy to
+      # regress silently, so assert it.
+      - name: A missing SESSION_SECRET must abort the boot
+        run: |
+          if docker run --rm -e API_URL=http://localhost:3000 tanstack-template:ci; then
+            echo "::error::container booted without SESSION_SECRET -- preflight is not running"
+            exit 1
+          fi
+
       # A built image proves nothing; a serving one does.
       - name: Smoke-test the image
         run: |

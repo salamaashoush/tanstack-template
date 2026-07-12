@@ -108,6 +108,9 @@ cookie and reloads, so the next document is _server-rendered_ in the new locale.
   back out — the router merges it, and the `QueryClient` in there is not serializable.
 - Keep business logic in `src/data/*.ts` as **pure functions with an injectable
   dataset**. That is what makes it unit-testable without a server.
+- `src/server/preflight.ts` is a Nitro app plugin that validates the environment at
+  server init and exits non-zero. If you add a **required** env var, touch it there
+  too — otherwise a container missing it boots and only fails once traffic arrives.
 
 ### The `env.PROD` trap
 

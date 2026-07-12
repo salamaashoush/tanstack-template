@@ -67,9 +67,9 @@ EXPOSE 3000
 
 # Unauthenticated server route -- see src/routes/api/health.ts.
 #
-# This also catches misconfiguration. src/server.ts reads the required env at
-# module load, so a container started without SESSION_SECRET serves 500s rather
-# than booting a broken app: the probe fails and no traffic is routed to it.
+# This is a liveness probe only. Misconfiguration never reaches it: the preflight
+# Nitro plugin validates the environment at server init and exits non-zero, so a
+# container without SESSION_SECRET never binds the port at all.
 HEALTHCHECK --interval=10s --timeout=3s --start-period=10s --retries=3 \
     CMD node -e "fetch('http://127.0.0.1:'+(process.env.PORT||3000)+'/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
 

@@ -87,6 +87,11 @@ docker run -p 3000:3000 \
 
 Configuration comes from the environment — no `.env` is baked into the image.
 
+A misconfigured container **refuses to start**. `src/server/preflight.ts` is a Nitro
+plugin that validates the environment at server init and exits non-zero, so a missing
+`SESSION_SECRET` crash-loops visibly instead of booting, passing its healthcheck and
+then failing every request.
+
 | Variable         |                                                                      |
 | ---------------- | -------------------------------------------------------------------- |
 | `SESSION_SECRET` | **Required.** Seals the session cookie. Use a 32+ byte random value. |
