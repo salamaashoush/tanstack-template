@@ -13,13 +13,13 @@ runs:
     # setup-bun does not install Node, and vite, vitest and playwright all execute
     # on Node via their shebangs -- both runtimes are required.
     - name: Use Node.js ${{ env.NODE_VERSION }}
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v6
       with:
         node-version: ${{ env.NODE_VERSION }}
 
     # setup-bun caches only the bun executable, not the dependency store.
     - name: Cache dependencies
-      uses: actions/cache@v4
+      uses: actions/cache@v6
       with:
         path: ~/.bun/install/cache
         key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}

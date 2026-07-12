@@ -23,7 +23,7 @@ import * as m from "~/i18n/messages";
 import { membersQuery } from "~/queries/members";
 import { membersQuerySchema } from "~/schema/members";
 
-import { memberColumns } from "./columns";
+import { memberColumns } from "./-columns";
 
 const ALL = "all";
 

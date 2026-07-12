@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "bun --env-file=.env run vite dev",
     "build": "bun --env-file=.env run vite build",
-    "start": "node --env-file=.env .output/server/index.mjs",
+    "start": "node --env-file-if-exists=.env .output/server/index.mjs",
     "preview": "bun --env-file=.env run vite preview",
     "lint": "oxlint --type-aware && bun scripts/check-i18n.ts",
     "lint:fix": "oxlint --type-aware --fix",
