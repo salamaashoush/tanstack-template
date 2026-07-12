@@ -30,6 +30,7 @@ export function UserNav() {
       <Button
         variant="ghost"
         size="icon"
+        aria-label={m.userNavNotifications()}
         className="text-muted-foreground hover:bg-muted hover:text-foreground"
       >
         <Bell className="h-5 w-5" />
@@ -39,10 +40,11 @@ export function UserNav() {
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
+            aria-label={m.userNavMenu()}
             className="relative h-8 w-8 rounded-full hover:bg-muted"
           >
             <Avatar className="h-8 w-8">
-              <AvatarImage src="https://github.com/shadcn.png" alt="@alexim" />
+              <AvatarImage src="https://github.com/shadcn.png" alt="" />
               <AvatarFallback>AI</AvatarFallback>
             </Avatar>
           </Button>

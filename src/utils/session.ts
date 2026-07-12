@@ -1,4 +1,8 @@
-import { setResponseStatus, useSession } from "@tanstack/react-start/server";
+import {
+  getRequestProtocol,
+  setResponseStatus,
+  useSession,
+} from "@tanstack/react-start/server";
 
 import type { UserProfile } from "~/api/models";
 
@@ -13,6 +17,17 @@ export interface AppSession {
 export function useAppSession() {
   return useSession<AppSession>({
     password: env.SESSION_SECRET,
+    cookie: {
+      // Keyed off the actual request protocol, not the build mode: the default
+      // (`secure: true`) makes WebKit drop the cookie on any http:// origin, so
+      // sign-in fails outright in Safari against a dev server or a plain-http
+      // preview. xForwardedProto keeps this correct behind a TLS-terminating
+      // proxy, where the origin request arrives as http.
+      secure: getRequestProtocol({ xForwardedProto: true }) === "https",
+      httpOnly: true,
+      sameSite: "lax",
+      path: "/",
+    },
   });
 }
 
