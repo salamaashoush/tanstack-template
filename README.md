@@ -1,71 +1,106 @@
-# Tanstack App
+# TanStack Template
 
-This project is a template for building applications using the Tanstack framework. It includes a variety of tools and configurations to help you get started quickly.
+A production-shaped template for building applications with TanStack Start.
 
-## Features
+## Stack
 
-- **React**: A JavaScript library for building user interfaces.
-- **TypeScript**: A strongly typed programming language that builds on JavaScript.
-- **Tailwind CSS**: A utility-first CSS framework for rapid UI development.
-- **Tanstack Start/Router**: A powerful routing library for React applications.
-- **React Query**: Data-fetching and state management for React.
-- **React hook form**: Form state management.
-- **i18next**: Internationalization framework for React.
-- **Vitest**: A Vite-native unit testing framework.
-- **ESLint**: A tool for identifying and fixing problems in JavaScript code.
-- **Prettier**: An opinionated code formatter.
+| Concern         | Choice                                                            |
+| --------------- | ----------------------------------------------------------------- |
+| Framework       | [TanStack Start](https://tanstack.com/start) (Vite plugin)        |
+| Routing         | TanStack Router (file-based, type-safe)                           |
+| Server data     | TanStack Query, SSR-integrated via `react-router-ssr-query`       |
+| UI              | React 19, Tailwind CSS v4, shadcn/ui (Radix)                      |
+| Forms           | React Hook Form + Valibot                                         |
+| i18n            | [Paraglide JS 2](https://paraglidejs.com) (compiled, tree-shaken) |
+| Testing         | Vitest 4, Testing Library, Playwright                             |
+| Lint / format   | [oxlint](https://oxc.rs) (type-aware) + [oxfmt](https://oxc.rs)   |
+| Package manager | [Bun](https://bun.com)                                            |
+| Deployment      | Nitro (`node-server` preset)                                      |
 
 ## Prerequisites
 
-- **Node.js**: Ensure you have Node.js installed. You can download it from [nodejs.org](https://nodejs.org/).
-- **pnpm**: This project uses `pnpm` as the package manager. You can install it globally using `npm`:
+- **Bun** — package manager and script runner: `curl -fsSL https://bun.sh/install | bash`
+- **Node.js 20+** — Vite, Vitest and Playwright execute on Node via their shebangs, and
+  the production server runs on Node. Bun does not replace it.
 
-  ```sh
-  npm install -g pnpm
-  ```
+## Getting started
 
-## Getting Started
+```sh
+bun install   # installs deps, compiles messages, creates .env with a fresh SESSION_SECRET
+bun run dev
+```
 
-1. **Clone the repository**:
-
-   ```sh
-   git clone <repository-url>
-   cd <repository-directory>
-   ```
-
-2. **Install dependencies**:
-
-   ```sh
-   pnpm install
-   ```
-
-3. **Start the development server**:
-
-   ```sh
-   pnpm dev
-   ```
+`bun install` runs `scripts/setup.ts`, which copies `.env.example` to `.env` and generates
+a random `SESSION_SECRET`. It also compiles the i18n messages into `src/i18n/` (generated,
+not committed).
 
 ## Scripts
 
-- **`pnpm dev`**: Starts the development server.
-- **`pnpm build`**: the project for production.
-- **`pnpm start`**: Starts the production server.
-- **`pnpm lint`**: Runs ESLint to check for linting errors.
-- **`pnpm test`**: Runs the test suite using Vitest.
-- **`pnpm coverage`**: Runs the test suite and generates a coverage report.
-- **`pnpm format`**: Checks the code formatting using Prettier.
-- **`pnpm format:write`**: Formats the code using Prettier.
-- **`pnpm type-check`**: Runs TypeScript type checking.
-- **`pnpm verify`**: Formats the code using Prettier, runs ESLint to check for linting errors, and runs TypeScript type checking.
-  
-## Project Structure
+| Script                 | Does                                                 |
+| ---------------------- | ---------------------------------------------------- |
+| `bun run dev`          | Dev server on :3000                                  |
+| `bun run build`        | Production build to `.output/`                       |
+| `bun run start`        | Serve the production build                           |
+| `bun run lint`         | oxlint (type-aware) + message-catalogue parity check |
+| `bun run lint:fix`     | oxlint with autofix                                  |
+| `bun run format`       | oxfmt check                                          |
+| `bun run format:write` | oxfmt write                                          |
+| `bun run type-check`   | `tsc --noEmit`                                       |
+| `bun run test`         | Vitest                                               |
+| `bun run test:e2e`     | Playwright (builds and serves the app first)         |
 
-- **app**: Contains the main application code.
-  - **`components/`**: Components grouped by features.
-    - **`ui/`** Reusable UI components generated by chadcn.
-  - **`routes/`**: Application routes.
-  - **`styles/`**: Global styles and Tailwind CSS configuration.
-  - **`utils/`**: Utility functions and helpers.
-  - **`api/`**: API services and utilities.
-- **`scripts/`**: Setup and utility scripts.
-- **`public/`**: Static assets and public files.
+Use `bun run test` / `bun run build`, not `bun test` / `bun build` — the bare forms invoke
+Bun's own test runner and bundler instead of these scripts.
+
+## Structure
+
+```
+src/
+  api/          HTTP client (fetch) and services
+  components/   feature components; ui/ is shadcn
+  routes/       file-based routes; routeTree.gen.ts is generated
+  server/       server functions (createServerFn)
+  schema/       Valibot schemas
+  i18n/         GENERATED by Paraglide -- do not edit
+  server.ts     server entry (wraps the handler in the i18n middleware)
+  router.tsx    router factory (getRouter)
+messages/       source message catalogues (en, ar)
+```
+
+## i18n
+
+Messages live in `messages/{locale}.json` and compile to tree-shakeable functions:
+
+```tsx
+import * as m from "~/i18n/messages";
+m.authSignInTitle();
+```
+
+Locale resolution is `cookie` → `preferredLanguage` (`Accept-Language`) → `baseLocale`,
+configured once in `paraglide.options.ts` and shared by the Vite plugin and the compile
+script. Direction comes from `getTextDirection()`; Arabic renders RTL server-side on the
+first response.
+
+Adding a message to `messages/en.json` without translating it in `messages/ar.json` fails
+`bun run lint` (`scripts/check-i18n.ts`). inlang removed its own `lint` command in CLI v3,
+so this script replaces it.
+
+## Auth
+
+`src/utils/session.ts` wraps TanStack's `useSession`, an encrypted (sealed) cookie session
+keyed off `SESSION_SECRET`. Server functions in `src/server/auth.ts` read and write it;
+`src/api/services/user.service.ts` is an in-memory fake — swap it for a real API.
+
+Server functions are CSRF-protected by default. If you add a `src/start.ts`, you must
+re-apply `createCsrfMiddleware()` yourself, as the automatic middleware no longer applies.
+
+> Adopting this into an existing app: the session cookie is named `start` by default. If
+> you are migrating from a vinxi-era TanStack Start app, pass `name: 'h3'` to `useSession`
+> or your users' existing sessions will be invalidated once.
+
+## Notes
+
+- `src/i18n/` and `.output/` are generated. Don't edit or commit them.
+- The devtools shell is client-only and is stripped from production builds. Gate anything
+  similar on `import.meta.env.PROD`, not the runtime `env` object — `env.PROD` resolves to
+  its schema default on the server.

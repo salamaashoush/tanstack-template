@@ -2,55 +2,40 @@
 
 # dependencies
 /node_modules
-/.pnp
-.pnp.js
 
+# env
 .env
+.env*.local
 
-compose.yaml
+# generated
+# Paraglide output: compiled from messages/*.json by postinstall and the Vite plugin.
+# (routeTree.gen.ts stays committed -- CI type-checks before anything builds it.)
+/src/i18n
+
+# build output
+.output
+.nitro
+/dist
+/build
+
 # testing
 /coverage
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
 
-# next.js
-.next/
-out/
-next-env.d.ts
-
-# production
-/build
+# typescript
+*.tsbuildinfo
 
 # misc
 .DS_Store
 *.pem
+.cache
+.vercel
+compose.yaml
 
 # debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-# local env files
-.env*.local
-.env
-
-# vercel
-.vercel
-
-# typescript
-*.tsbuildinfo
-
-.DS_Store
-.cache
-.env
-.vercel
-.output
-.vinxi
-
-/build/
-/api/
-/server/build
-/public/build
-
-/test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/

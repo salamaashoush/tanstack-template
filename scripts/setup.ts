@@ -60,8 +60,9 @@ async function main() {
   await updateAuthSecret();
 }
 
-main()
-  .catch((err: unknown) => {
-    console.error(err);
-  })
-  .then(() => process.exit(0));
+try {
+  await main();
+} catch (error) {
+  console.error(error);
+  process.exit(1);
+}

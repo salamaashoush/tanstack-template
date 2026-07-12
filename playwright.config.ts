@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-properties */
 import { defineConfig, devices } from "@playwright/test";
 
 /**
@@ -76,9 +75,10 @@ export default defineConfig({
   //   reuseExistingServer: !process.env.CI,
   // },
   webServer: {
-    command: "pnpm build && pnpm start",
+    command: "bun run build && bun run start",
     url: "http://127.0.0.1:3000",
     reuseExistingServer: !process.env.CI,
+    timeout: 120_000,
     stdout: "ignore",
     stderr: "pipe",
   },

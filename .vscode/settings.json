@@ -1,33 +1,20 @@
 {
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "always"
-    // "source.organizeImports": "explicit"
-  },
-  "eslint.workingDirectories": [
-    {
-      "mode": "auto"
-    }
-  ],
-  "[typescript,typescriptreact,javascript,typescriptreact,css,scss,markdown,html]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
   "editor.formatOnSave": true,
-  "eslint.rules.customizations": [{ "rule": "*", "severity": "warn" }],
-  "eslint.runtime": "node",
-
-  "eslint.useFlatConfig": true,
-  "prettier.ignorePath": ".gitignore",
+  "editor.defaultFormatter": "oxc.oxc-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.oxc": "explicit"
+  },
+  "oxc.enable": true,
+  "oxc.typeAware": true,
   "tailwindCSS.experimental.classRegex": [
     ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
-    ["cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+    ["cn\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
   ],
-  "tailwindCSS.experimental.configFile": "./app/styles/globals.css",
+  "tailwindCSS.experimental.configFile": "./src/styles/globals.css",
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "typescript.tsdk": "node_modules/typescript/lib",
-  "[ignore]": {
-    "editor.defaultFormatter": "foxundermoon.shell-format"
-  },
   "files.watcherExclude": {
-    "**/routeTree.gen.ts": true
+    "**/routeTree.gen.ts": true,
+    "**/src/i18n/**": true
   }
 }

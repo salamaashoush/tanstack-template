@@ -4,14 +4,23 @@ description: "Common setup steps for Actions"
 runs:
   using: composite
   steps:
-    - uses: pnpm/action-setup@v4
+    # setup-bun picks the version up from the "packageManager" field, but it does
+    # NOT install Node -- vite, vitest and playwright all execute on Node via
+    # their shebangs, so both runtimes are needed.
+    - uses: oven-sh/setup-bun@v2
+
     - name: Use Node.js ${{ env.NODE_VERSION }}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ env.NODE_VERSION }}
-        cache: "pnpm"
-    - shell: bash
-      run: pnpm add -g turbo
+
+    # setup-bun caches only the bun executable, not the dependency store.
+    - name: Cache dependencies
+      uses: actions/cache@v4
+      with:
+        path: ~/.bun/install/cache
+        key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
+        restore-keys: ${{ runner.os }}-bun-
 
     - shell: bash
-      run: pnpm install
+      run: bun install --frozen-lockfile

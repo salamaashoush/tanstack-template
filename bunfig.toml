@@ -1,0 +1,5 @@
+# Bun defaults to a hoisted node_modules for non-workspace projects, which is
+# looser than pnpm and allows phantom dependencies. Isolated preserves the
+# guarantee the project had under pnpm.
+[install]
+linker = "isolated"

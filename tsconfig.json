@@ -14,12 +14,10 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "incremental": true,
-    "baseUrl": ".",
     "paths": {
-      "~/*": ["./app/*"]
-    },
-    "types": ["@vitest/browser/providers/playwright"]
+      "~/*": ["./src/*"]
+    }
   },
   "include": ["."],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", ".output", ".nitro", "dist"]
 }

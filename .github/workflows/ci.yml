@@ -13,8 +13,7 @@ concurrency:
 
 env:
   FORCE_COLOR: 3
-  NODE_VERSION: 23
-  NODE_OPTIONS: --disable-warning=ExperimentalWarning
+  NODE_VERSION: 22
 
 jobs:
   lint:
@@ -26,11 +25,10 @@ jobs:
         uses: ./.github/setup
 
       - name: Lint
-        run: pnpm lint
+        run: bun run lint
 
   format:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
 
@@ -38,11 +36,10 @@ jobs:
         uses: ./.github/setup
 
       - name: Format
-        run: pnpm format
+        run: bun run format
 
   type-check:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
 
@@ -50,7 +47,7 @@ jobs:
         uses: ./.github/setup
 
       - name: Typecheck
-        run: pnpm type-check
+        run: bun run type-check
 
   test:
     runs-on: ubuntu-latest
@@ -61,22 +58,26 @@ jobs:
         uses: ./.github/setup
 
       - name: Test
-        run: pnpm test
+        run: bun run test
 
-  # e2e:
-  #   timeout-minutes: 60
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - name: Setup
-  #       uses: ./.github/setup
-  #     - name: Install Playwright Browsers
-  #       run: pnpm test:e2e:install
-  #     - name: Run Playwright tests
-  #       run: pnpm test:e2e
-  #     - uses: actions/upload-artifact@v4
-  #       if: always()
-  #       with:
-  #         name: playwright-report
-  #         path: playwright-report/
-  #         retention-days: 30
+  e2e:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup
+        uses: ./.github/setup
+
+      - name: Install Playwright browsers
+        run: bun run test:e2e:install
+
+      - name: Run Playwright tests
+        run: bun run test:e2e
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30

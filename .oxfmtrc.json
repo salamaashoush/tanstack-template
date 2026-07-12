@@ -1,0 +1,30 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "printWidth": 80,
+  "sortImports": {
+    "newlinesBetween": true,
+    "groups": [
+      "type-import",
+      ["value-builtin", "value-external"],
+      "type-internal",
+      "value-internal",
+      ["type-parent", "type-sibling", "type-index"],
+      ["value-parent", "value-sibling", "value-index"],
+      "unknown"
+    ]
+  },
+  "sortTailwindcss": {
+    "stylesheet": "./src/styles/globals.css",
+    "functions": ["cn", "cva"]
+  },
+  "ignorePatterns": [
+    "src/i18n/**",
+    "src/routeTree.gen.ts",
+    ".output/**",
+    ".nitro/**",
+    "dist/**",
+    "coverage/**",
+    "playwright-report/**",
+    "bun.lock"
+  ]
+}
