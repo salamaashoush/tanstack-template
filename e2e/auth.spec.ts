@@ -1,8 +1,10 @@
+import type { Page } from "@playwright/test";
+
 import { expect, test } from "@playwright/test";
 
 const CREDENTIALS = { email: "fake@fake.com", password: "fake12345" };
 
-async function signIn(page: import("@playwright/test").Page) {
+async function signIn(page: Page) {
   await page.goto("/sign-in");
   await page.getByRole("textbox", { name: "Email" }).fill(CREDENTIALS.email);
   await page

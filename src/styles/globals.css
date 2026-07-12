@@ -1,4 +1,8 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+/* Defines the @custom-variant data-open / data-closed / data-checked variants
+   the Base UI components compile against. Required, not cosmetic. */
+@import "shadcn/tailwind.css";
 
 @variant dark (&:is(.dark *));
 @plugin "@tailwindcss/typography";
@@ -55,22 +59,9 @@
   --animate-accordion-up: accordion-up 0.2s ease-out;
   --animate-spin-slow: spin-slow 10s linear infinite;
 
-  @keyframes accordion-down {
-    from {
-      height: 0;
-    }
-    to {
-      height: var(--radix-accordion-content-height);
-    }
-  }
-  @keyframes accordion-up {
-    from {
-      height: var(--radix-accordion-content-height);
-    }
-    to {
-      height: 0;
-    }
-  }
+  /* accordion-down / accordion-up keyframes come from shadcn/tailwind.css, which
+     resolves the Base UI --accordion-panel-height. Redefining them here would
+     shadow that with the dead Radix variable. */
   @keyframes spin-slow {
     from {
       transform: rotate(0deg);

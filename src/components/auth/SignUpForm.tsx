@@ -1,34 +1,30 @@
-import { valibotResolver } from "@hookform/resolvers/valibot";
+import { useForm } from "@tanstack/react-form";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useCallback } from "react";
-import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-
-import type { RegisterSchemaOutput } from "~/schema/auth";
 
 import { Button } from "~/components/ui/button";
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "~/components/ui/form";
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "~/components/ui/field";
 import { Input } from "~/components/ui/input";
-import * as m from "~/i18n/messages";
-import { registerSchema } from "~/schema/auth";
-import { register } from "~/server/auth";
-
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
+} from "~/components/ui/select";
+import * as m from "~/i18n/messages";
+import { registerSchema } from "~/schema/auth";
+import { register } from "~/server/auth";
+
+const PHONE_CODES = ["+1", "+20", "+44", "+91"];
 
 export function SignUpForm() {
   const router = useRouter();
@@ -54,204 +50,244 @@ export function SignUpForm() {
       password: "",
       confirmPassword: "",
     },
-    resolver: valibotResolver(registerSchema),
+    validators: { onSubmit: registerSchema },
+    onSubmit: async ({ value }) => {
+      await mutateAsync({ data: value });
+    },
   });
 
-  const onSubmit = async (data: RegisterSchemaOutput) => {
-    await mutateAsync({ data });
-  };
-
-  const isSubmitting = form.formState.isSubmitting;
   const handleSignIn = useCallback(() => {
     void router.navigate({ to: "/sign-in" });
   }, [router]);
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-foreground">
-                {m.authSignUpFormEmail()}
-              </FormLabel>
-              <FormControl>
+    <form
+      onSubmit={(event) => {
+        event.preventDefault();
+        void form.handleSubmit();
+      }}
+    >
+      <FieldGroup>
+        <form.Field name="email">
+          {(field) => {
+            const invalid =
+              field.state.meta.isTouched && !field.state.meta.isValid;
+            return (
+              <Field data-invalid={invalid}>
+                <FieldLabel htmlFor={field.name}>
+                  {m.authSignUpFormEmail()}
+                </FieldLabel>
                 <Input
+                  id={field.name}
+                  name={field.name}
                   type="text"
                   inputMode="email"
-                  placeholder={m.authSignUpFormEmailPlaceholder()}
                   autoComplete="email"
-                  {...field}
+                  placeholder={m.authSignUpFormEmailPlaceholder()}
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={(event) => field.handleChange(event.target.value)}
+                  aria-invalid={invalid}
                 />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-foreground">
-                {m.authSignUpFormName()}
-              </FormLabel>
-              <FormControl>
-                <Input
-                  placeholder={m.authSignUpFormNamePlaceholder()}
-                  className="border-border bg-muted/50 text-foreground placeholder:text-neutral-600"
-                  autoComplete="username"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                {invalid && <FieldError errors={field.state.meta.errors} />}
+              </Field>
+            );
+          }}
+        </form.Field>
 
-        <FormField
-          control={form.control}
-          name="mobile"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-foreground" htmlFor="mobile">
-                {m.authSignUpFormMobile()}
-              </FormLabel>
-              <div className="flex gap-2">
-                <FormControl>
+        <form.Field name="name">
+          {(field) => {
+            const invalid =
+              field.state.meta.isTouched && !field.state.meta.isValid;
+            return (
+              <Field data-invalid={invalid}>
+                <FieldLabel htmlFor={field.name}>
+                  {m.authSignUpFormName()}
+                </FieldLabel>
+                <Input
+                  id={field.name}
+                  name={field.name}
+                  autoComplete="username"
+                  placeholder={m.authSignUpFormNamePlaceholder()}
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={(event) => field.handleChange(event.target.value)}
+                  aria-invalid={invalid}
+                />
+                {invalid && <FieldError errors={field.state.meta.errors} />}
+              </Field>
+            );
+          }}
+        </form.Field>
+
+        <form.Field name="mobile">
+          {(field) => {
+            const invalid =
+              field.state.meta.isTouched && !field.state.meta.isValid;
+            return (
+              <Field data-invalid={invalid}>
+                <FieldLabel htmlFor={field.name}>
+                  {m.authSignUpFormMobile()}
+                </FieldLabel>
+                <div className="flex gap-2">
                   <Select defaultValue="+20">
-                    <SelectTrigger className="w-[80px] border-border bg-muted/50 text-foreground">
-                      <SelectValue placeholder={m.authSignUpFormPhoneCode()} />
+                    <SelectTrigger
+                      className="w-[90px]"
+                      aria-label={m.authSignUpFormPhoneCode()}
+                    >
+                      <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="+1">+1</SelectItem>
-                      <SelectItem value="+20">+20</SelectItem>
-                      <SelectItem value="+44">+44</SelectItem>
-                      <SelectItem value="+91">+91</SelectItem>
+                      {PHONE_CODES.map((code) => (
+                        <SelectItem key={code} value={code}>
+                          {code}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
-                </FormControl>
-                <FormControl>
-                  <div className="flex-1">
-                    <Input
-                      id="mobile"
-                      type="tel"
-                      placeholder={m.authSignUpFormMobilePlaceholder()}
-                      className="border-border bg-muted/50 text-foreground placeholder:text-neutral-600"
-                      autoComplete="tel"
-                      {...field}
-                    />
-                    <FormMessage className="mt-1 text-sm text-destructive" />
-                  </div>
-                </FormControl>
-              </div>
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="company"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-foreground">
-                {m.authSignUpFormCompany()}
-              </FormLabel>
-              <FormControl>
+                  <Input
+                    id={field.name}
+                    name={field.name}
+                    type="tel"
+                    autoComplete="tel"
+                    className="flex-1"
+                    placeholder={m.authSignUpFormMobilePlaceholder()}
+                    value={field.state.value}
+                    onBlur={field.handleBlur}
+                    onChange={(event) => field.handleChange(event.target.value)}
+                    aria-invalid={invalid}
+                  />
+                </div>
+                {invalid && <FieldError errors={field.state.meta.errors} />}
+              </Field>
+            );
+          }}
+        </form.Field>
+
+        <form.Field name="company">
+          {(field) => {
+            const invalid =
+              field.state.meta.isTouched && !field.state.meta.isValid;
+            return (
+              <Field data-invalid={invalid}>
+                <FieldLabel htmlFor={field.name}>
+                  {m.authSignUpFormCompany()}
+                </FieldLabel>
                 <Input
+                  id={field.name}
+                  name={field.name}
                   type="text"
                   placeholder={m.authSignUpFormCompanyPlaceholder()}
-                  className="border-border bg-muted/50 text-foreground placeholder:text-neutral-600"
-                  {...field}
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={(event) => field.handleChange(event.target.value)}
+                  aria-invalid={invalid}
                 />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="jobTitle"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-foreground">
-                {m.authSignUpFormJobTitle()}
-              </FormLabel>
-              <FormControl>
+                {invalid && <FieldError errors={field.state.meta.errors} />}
+              </Field>
+            );
+          }}
+        </form.Field>
+
+        <form.Field name="jobTitle">
+          {(field) => {
+            const invalid =
+              field.state.meta.isTouched && !field.state.meta.isValid;
+            return (
+              <Field data-invalid={invalid}>
+                <FieldLabel htmlFor={field.name}>
+                  {m.authSignUpFormJobTitle()}
+                </FieldLabel>
                 <Input
+                  id={field.name}
+                  name={field.name}
                   type="text"
                   placeholder={m.authSignUpFormJobTitlePlaceholder()}
-                  className="border-border bg-muted/50 text-foreground placeholder:text-neutral-600"
-                  {...field}
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={(event) => field.handleChange(event.target.value)}
+                  aria-invalid={invalid}
                 />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-foreground">
-                {m.authSignUpFormPassword()}
-              </FormLabel>
-              <FormControl>
+                {invalid && <FieldError errors={field.state.meta.errors} />}
+              </Field>
+            );
+          }}
+        </form.Field>
+
+        <form.Field name="password">
+          {(field) => {
+            const invalid =
+              field.state.meta.isTouched && !field.state.meta.isValid;
+            return (
+              <Field data-invalid={invalid}>
+                <FieldLabel htmlFor={field.name}>
+                  {m.authSignUpFormPassword()}
+                </FieldLabel>
                 <Input
+                  id={field.name}
+                  name={field.name}
                   type="password"
+                  autoComplete="new-password"
                   placeholder="••••••••"
-                  autoComplete="current-password"
-                  {...field}
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={(event) => field.handleChange(event.target.value)}
+                  aria-invalid={invalid}
                 />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="confirmPassword"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-foreground">
-                {m.authSignUpFormConfirmPassword()}
-              </FormLabel>
-              <FormControl>
+                {invalid && <FieldError errors={field.state.meta.errors} />}
+              </Field>
+            );
+          }}
+        </form.Field>
+
+        <form.Field name="confirmPassword">
+          {(field) => {
+            const invalid =
+              field.state.meta.isTouched && !field.state.meta.isValid;
+            return (
+              <Field data-invalid={invalid}>
+                <FieldLabel htmlFor={field.name}>
+                  {m.authSignUpFormConfirmPassword()}
+                </FieldLabel>
                 <Input
+                  id={field.name}
+                  name={field.name}
                   type="password"
+                  autoComplete="new-password"
                   placeholder="••••••••"
-                  autoComplete="current-password"
-                  {...field}
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={(event) => field.handleChange(event.target.value)}
+                  aria-invalid={invalid}
                 />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
+                {invalid && <FieldError errors={field.state.meta.errors} />}
+              </Field>
+            );
+          }}
+        </form.Field>
+
+        <form.Subscribe selector={(state) => state.isSubmitting}>
+          {(isSubmitting) => (
+            <Button type="submit" className="w-full" disabled={isSubmitting}>
+              {isSubmitting
+                ? m.authSignUpFormSubmitting()
+                : m.authSignUpFormSubmit()}
+            </Button>
           )}
-        />
-        <Button
-          type="submit"
-          className="w-full bg-[#FF5B5B] font-medium text-foreground hover:bg-[#FF4D4D]"
-          disabled={isSubmitting}
-        >
-          {isSubmitting
-            ? m.authSignUpFormSubmitting()
-            : m.authSignUpFormSubmit()}
-        </Button>
+        </form.Subscribe>
 
         <p className="text-center text-sm text-muted-foreground">
           {m.authSignUpFormHaveAccount()}{" "}
           <Button
             type="button"
             variant="link"
-            className="h-auto p-0 font-medium text-[#FF5B5B]"
+            className="h-auto p-0 font-medium"
             onClick={handleSignIn}
           >
             {m.authSignUpFormSignIn()}
           </Button>
         </p>
-      </form>
-    </Form>
+      </FieldGroup>
+    </form>
   );
 }

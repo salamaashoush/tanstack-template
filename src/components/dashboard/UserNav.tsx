@@ -7,6 +7,7 @@ import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -37,27 +38,33 @@ export function UserNav() {
       </Button>
 
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            aria-label={m.userNavMenu()}
-            className="relative h-8 w-8 rounded-full hover:bg-muted"
-          >
-            <Avatar className="h-8 w-8">
-              <AvatarImage src="https://github.com/shadcn.png" alt="" />
-              <AvatarFallback>AI</AvatarFallback>
-            </Avatar>
-          </Button>
-        </DropdownMenuTrigger>
+        <DropdownMenuTrigger
+          render={
+            <Button
+              variant="ghost"
+              aria-label={m.userNavMenu()}
+              className="relative size-8 rounded-full hover:bg-muted"
+            >
+              <Avatar className="size-8">
+                <AvatarImage src="https://github.com/shadcn.png" alt="" />
+                <AvatarFallback>AI</AvatarFallback>
+              </Avatar>
+            </Button>
+          }
+        />
         <DropdownMenuContent className="w-56" align="end">
-          <DropdownMenuLabel>
-            <div className="flex flex-col space-y-1">
-              <p className="text-sm leading-none font-medium">{data?.name}</p>
-              <p className="text-xs leading-none text-muted-foreground">
-                {data?.email}
-              </p>
-            </div>
-          </DropdownMenuLabel>
+          {/* Base UI requires GroupLabel to live inside a Group; a bare label
+              throws MenuGroupContext is missing. */}
+          <DropdownMenuGroup>
+            <DropdownMenuLabel>
+              <div className="flex flex-col space-y-1">
+                <p className="text-sm leading-none font-medium">{data?.name}</p>
+                <p className="text-xs leading-none text-muted-foreground">
+                  {data?.email}
+                </p>
+              </div>
+            </DropdownMenuLabel>
+          </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuItem>{m.userNavProfile()}</DropdownMenuItem>
           <DropdownMenuItem>{m.userNavSettings()}</DropdownMenuItem>
