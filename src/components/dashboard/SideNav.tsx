@@ -1,46 +1,43 @@
-import { BarChart3, Sword, Users, Wrench } from "lucide-react";
+import type { LinkProps } from "@tanstack/react-router";
+import type { LucideIcon } from "lucide-react";
 
-import { Button } from "~/components/ui/button";
+import { Link } from "@tanstack/react-router";
+import { Activity, LayoutDashboard, Users } from "lucide-react";
+
+import * as m from "~/i18n/messages";
 import { cn } from "~/utils/cn";
 
-const items = [
-  {
-    title: "Dashboard",
-    icon: BarChart3,
-    href: "/dashboard",
-  },
-  {
-    title: "Users",
-    icon: Users,
-    href: "/users",
-  },
-  {
-    title: "Settings",
-    icon: Wrench,
-    href: "/settings",
-  },
-  {
-    title: "Tools",
-    icon: Sword,
-    href: "/tools",
-  },
+interface NavItem {
+  to: LinkProps["to"];
+  label: () => string;
+  icon: LucideIcon;
+}
+
+const ITEMS: NavItem[] = [
+  { to: "/dashboard", label: m.navOverview, icon: LayoutDashboard },
+  { to: "/dashboard/members", label: m.navMembers, icon: Users },
+  { to: "/dashboard/activity", label: m.navActivity, icon: Activity },
 ];
 
 export function SideNav() {
   return (
-    <nav className="flex">
-      {items.map((item) => (
-        <Button
-          key={item.href}
-          variant="ghost"
+    <nav className="flex" aria-label={m.navPrimary()}>
+      {ITEMS.map(({ to, label, icon: Icon }) => (
+        <Link
+          key={to}
+          to={to}
+          // exact only for the index: otherwise /dashboard stays active on
+          // every child route.
+          activeOptions={{ exact: to === "/dashboard" }}
           className={cn(
-            "h-12 gap-2 rounded-none text-muted-foreground hover:bg-muted hover:text-foreground",
-            item.href === "/threats" && "bg-muted text-foreground",
+            "flex h-12 items-center gap-2 border-b-2 border-transparent px-4 text-sm font-medium text-muted-foreground transition-colors",
+            "hover:bg-muted hover:text-foreground",
+            "data-[status=active]:border-primary data-[status=active]:text-foreground",
           )}
         >
-          <item.icon className="h-5 w-5" />
-          {item.title}
-        </Button>
+          <Icon className="size-4" />
+          {label()}
+        </Link>
       ))}
     </nav>
   );

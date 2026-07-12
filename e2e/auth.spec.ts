@@ -30,12 +30,16 @@ test("signing in lands on the dashboard and survives a reload", async ({
   page,
 }) => {
   await signIn(page);
-  await expect(page.getByText("Home sweet home")).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Overview", level: 1 }),
+  ).toBeVisible();
 
   // Full reload: proves the sealed session cookie round-trips on a fresh request.
   await page.reload();
   await expect(page).toHaveURL(/\/dashboard/);
-  await expect(page.getByText("Home sweet home")).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Overview", level: 1 }),
+  ).toBeVisible();
 });
 
 test("an authenticated visitor is redirected away from sign-in", async ({

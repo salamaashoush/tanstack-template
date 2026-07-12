@@ -3,7 +3,7 @@ import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import { DashboardLayout } from "~/components/dashboard/DashboardLayout";
 import { getUserProfileQuery } from "~/queries/user";
 
-export const Route = createFileRoute("/_dashboard")({
+export const Route = createFileRoute("/_authed")({
   beforeLoad: ({ context, location }) => {
     if (!context.session?.isAuthenticated) {
       throw redirect({
@@ -19,10 +19,12 @@ export const Route = createFileRoute("/_dashboard")({
       await context.queryClient.ensureQueryData(getUserProfileQuery);
     }
   },
-  component: DashboardPage,
+  component: AuthedLayout,
 });
 
-function DashboardPage() {
+// Pathless: it contributes no URL segment, only the auth gate and the app chrome
+// that every route beneath it shares.
+function AuthedLayout() {
   return (
     <DashboardLayout>
       <Outlet />

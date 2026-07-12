@@ -1,54 +1,65 @@
 import type { ErrorComponentProps } from "@tanstack/react-router";
 
-import {
-  ErrorComponent,
-  Link,
-  rootRouteId,
-  useMatch,
-  useRouter,
-} from "@tanstack/react-router";
+import { Link, rootRouteId, useMatch, useRouter } from "@tanstack/react-router";
+import { RefreshCw, TriangleAlert } from "lucide-react";
 
-export function DefaultCatchBoundary({ error }: ErrorComponentProps) {
+import { Button } from "~/components/ui/button";
+import * as m from "~/i18n/messages";
+import { getMessageFromError } from "~/utils/error";
+
+import { StatusPage } from "./status/StatusPage";
+
+export function DefaultCatchBoundary({ error, reset }: ErrorComponentProps) {
   const router = useRouter();
   const isRoot = useMatch({
     strict: false,
     select: (state) => state.id === rootRouteId,
   });
 
-  console.error(error);
-
   return (
-    <div className="flex min-w-0 flex-1 flex-col items-center justify-center gap-6 p-4">
-      <ErrorComponent error={error} />
-      <div className="flex flex-wrap items-center gap-2">
-        <button
-          onClick={() => {
-            void router.invalidate();
-          }}
-          className={`rounded bg-gray-600 px-2 py-1 font-extrabold text-foreground uppercase dark:bg-gray-700`}
-        >
-          Try Again
-        </button>
-        {isRoot ? (
-          <Link
-            to="/"
-            className={`rounded bg-gray-600 px-2 py-1 font-extrabold text-foreground uppercase dark:bg-gray-700`}
-          >
-            Home
-          </Link>
-        ) : (
-          <Link
-            to="/"
-            className={`rounded bg-gray-600 px-2 py-1 font-extrabold text-foreground uppercase dark:bg-gray-700`}
-            onClick={(e) => {
-              e.preventDefault();
-              window.history.back();
+    <StatusPage
+      icon={<TriangleAlert className="size-5" />}
+      title={m.errorTitle()}
+      description={m.errorBody()}
+      actions={
+        <>
+          <Button
+            onClick={() => {
+              reset();
+              void router.invalidate();
             }}
           >
-            Go Back
-          </Link>
-        )}
-      </div>
-    </div>
+            <RefreshCw className="size-4" />
+            {m.errorRetry()}
+          </Button>
+
+          {isRoot ? (
+            <Button
+              variant="outline"
+              render={<Link to="/">{m.errorGoHome()}</Link>}
+            />
+          ) : (
+            <Button
+              variant="outline"
+              onClick={() => {
+                router.history.back();
+              }}
+            >
+              {m.errorGoBack()}
+            </Button>
+          )}
+        </>
+      }
+    >
+      {/* Useful to a developer, meaningless to a user: available, not in their face. */}
+      <details className="rounded-md border border-border bg-muted/40 text-start">
+        <summary className="cursor-pointer px-4 py-3 text-sm font-medium text-foreground">
+          {m.errorDetails()}
+        </summary>
+        <pre className="overflow-x-auto border-t border-border px-4 py-3 text-xs text-muted-foreground">
+          {getMessageFromError(error)}
+        </pre>
+      </details>
+    </StatusPage>
   );
 }

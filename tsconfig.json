@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
     "strictNullChecks": true,
+    // Indexing yields `T | undefined`. Without it, `rows[i]` claims to always
+    // exist -- a lie at every real boundary (a virtualiser's sentinel row, an
+    // empty page, a split() result).
+    "noUncheckedIndexedAccess": true,
     "target": "ES2022",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,

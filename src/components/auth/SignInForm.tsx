@@ -109,7 +109,7 @@ export function SignInForm() {
           }}
         </form.Field>
 
-        <div className="text-left">
+        <div className="text-start">
           <Button
             type="button"
             variant="link"

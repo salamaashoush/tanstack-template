@@ -1,27 +1,42 @@
-import type { PropsWithChildren } from "react";
+import type { ReactNode } from "react";
 
-import { Link } from "@tanstack/react-router";
+import { Link, useRouter } from "@tanstack/react-router";
+import { Compass } from "lucide-react";
 
-export function NotFound({ children }: PropsWithChildren) {
+import { Button } from "~/components/ui/button";
+import * as m from "~/i18n/messages";
+
+import { StatusPage } from "./status/StatusPage";
+
+interface NotFoundProps {
+  /** Overrides the default description, for route-specific wording. */
+  children?: ReactNode;
+}
+
+export function NotFound({ children }: NotFoundProps) {
+  const router = useRouter();
+
   return (
-    <div className="space-y-2 p-2">
-      <div className="text-gray-600 dark:text-gray-400">
-        {children || <p>The page you are looking for does not exist.</p>}
-      </div>
-      <p className="flex flex-wrap items-center gap-2">
-        <button
-          onClick={() => window.history.back()}
-          className="rounded bg-emerald-500 px-2 py-1 text-sm font-black text-foreground uppercase"
-        >
-          Go back
-        </button>
-        <Link
-          to="/"
-          className="rounded bg-cyan-600 px-2 py-1 text-sm font-black text-foreground uppercase"
-        >
-          Start Over
-        </Link>
-      </p>
-    </div>
+    <StatusPage
+      code="404"
+      icon={<Compass className="size-5" />}
+      title={m.notFoundTitle()}
+      description={typeof children === "string" ? children : m.notFoundBody()}
+      actions={
+        <>
+          <Button render={<Link to="/">{m.notFoundGoHome()}</Link>} />
+          <Button
+            variant="outline"
+            onClick={() => {
+              router.history.back();
+            }}
+          >
+            {m.notFoundGoBack()}
+          </Button>
+        </>
+      }
+    >
+      {typeof children === "string" ? null : children}
+    </StatusPage>
   );
 }

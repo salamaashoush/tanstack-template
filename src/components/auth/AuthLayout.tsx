@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
 
 import { Logo } from "~/components/common/Logo";
+import { LocaleToggle } from "~/components/theme/LocaleToggle";
+import { ThemeToggle } from "~/components/theme/ThemeToggle";
 import * as m from "~/i18n/messages";
 
 interface AuthLayoutProps {
@@ -12,6 +14,11 @@ export function AuthLayout({ children }: AuthLayoutProps) {
   return (
     <div className="grid min-h-screen bg-background lg:grid-cols-2">
       <div className="flex min-h-screen flex-col">
+        {/* Language and theme must be reachable before sign-in, not only after. */}
+        <div className="flex justify-end gap-1 p-4">
+          <LocaleToggle />
+          <ThemeToggle />
+        </div>
         <div className="flex flex-1 items-center justify-center p-8 lg:p-12 xl:p-16">
           <div className="w-full max-w-[400px]">{children}</div>
         </div>

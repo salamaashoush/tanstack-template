@@ -25,13 +25,13 @@ async function updateAuthSecret() {
     const secretLine = `SESSION_SECRET='${NEW_SECRET}'`;
 
     if (index !== -1) {
-      // check if existing value not empty
-      const isSet = lines[index].split("=")[1].length > 2;
+      // A bare `SESSION_SECRET` with no `=`, or an empty value, means unset.
+      const existing = lines[index]?.split("=")[1]?.trim() ?? "";
+      const isSet = existing.replaceAll(/^['"]|['"]$/g, "").length > 0;
       if (isSet) {
         console.log("SESSION_SECRET already set!");
         return;
       }
-      // Replace the existing line
       lines[index] = secretLine;
     } else {
       // Append new SESSION_SECRET if not found

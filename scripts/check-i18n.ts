@@ -18,13 +18,12 @@ async function readKeys(locale: string): Promise<Set<string>> {
 const { baseLocale, locales } = settings;
 const targets = locales.filter((locale) => locale !== baseLocale);
 
-const [baseKeys, ...targetKeys] = await Promise.all([
-  readKeys(baseLocale),
-  ...targets.map(readKeys),
-]);
+const baseKeys = await readKeys(baseLocale);
+const targetEntries = await Promise.all(
+  targets.map(async (locale) => [locale, await readKeys(locale)] as const),
+);
 
-const problems = targets.flatMap((locale, index) => {
-  const keys = targetKeys[index];
+const problems = targetEntries.flatMap(([locale, keys]) => {
   const missing = [...baseKeys]
     .filter((key) => !keys.has(key))
     .toSorted()

@@ -13,6 +13,7 @@ import { lazy, Suspense, useEffect, useState } from "react";
 import type { AppSession } from "~/utils/session";
 
 import { Toaster } from "~/components/ui/sonner";
+import * as m from "~/i18n/messages";
 import { getLocale, getTextDirection } from "~/i18n/runtime";
 import { getUserProfileQuery } from "~/queries/user";
 import { getUserSession } from "~/server/auth";
@@ -80,9 +81,8 @@ export const Route = createRootRouteWithContext<AppRouterContext>()({
         content: "width=device-width, initial-scale=1",
       },
       ...seo({
-        title: "ThreatVerse",
-        description:
-          "ThreatVerse is a platform for sharing and discussing cybersecurity threats.",
+        title: m.commonAppName(),
+        description: m.commonAppDescription(),
       }),
     ],
     links: [
