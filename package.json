@@ -83,7 +83,7 @@
     "*": "oxfmt",
     "*.{js,jsx,ts,tsx}": "oxlint --fix"
   },
-  "packageManager": "bun@1.3.14",
+  "packageManager": "bun@1.4.0",
   "trustedDependencies": [
     "@parcel/watcher",
     "@swc/core",

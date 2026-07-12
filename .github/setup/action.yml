@@ -4,11 +4,14 @@ description: "Common setup steps for Actions"
 runs:
   using: composite
   steps:
-    # setup-bun picks the version up from the "packageManager" field, but it does
-    # NOT install Node -- vite, vitest and playwright all execute on Node via
-    # their shebangs, so both runtimes are needed.
+    # Pinned to canary on purpose: bun.lock is lockfileVersion 2, which bun 1.3.x
+    # cannot parse. Keep this in step with the Dockerfile.
     - uses: oven-sh/setup-bun@v2
+      with:
+        bun-version: canary
 
+    # setup-bun does not install Node, and vite, vitest and playwright all execute
+    # on Node via their shebangs -- both runtimes are required.
     - name: Use Node.js ${{ env.NODE_VERSION }}
       uses: actions/setup-node@v4
       with:

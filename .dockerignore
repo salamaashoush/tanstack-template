@@ -1,0 +1,36 @@
+# Keep the build context small and never ship secrets or host artefacts.
+.git
+.github
+node_modules
+.output
+.nitro
+.tanstack
+dist
+
+# Secrets: the image takes its config from the environment at runtime.
+.env
+.env.*
+!.env.example
+
+# Test and tooling output
+coverage
+test-results
+playwright-report
+blob-report
+playwright/.cache
+.ferridriver
+*.tsbuildinfo
+
+# Editor / OS
+.vscode
+.idea
+.DS_Store
+
+# Generated at build time by the paraglide plugin
+src/i18n
+
+# Not needed to build or run the server
+e2e
+README.md
+Dockerfile
+.dockerignore

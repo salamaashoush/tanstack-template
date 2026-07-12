@@ -1,0 +1,44 @@
+---
+description: Server functions, sessions, routing and data-layer rules
+globs: src/server/**/*.ts,src/data/**/*.ts,src/routes/**/*.tsx,src/queries/**/*.ts,src/env.ts
+alwaysApply: false
+---
+
+# Server, routing and data
+
+## Server functions
+
+- Live in `src/server/*.ts`. **Do not name a file `*.server.ts`** — Start's import
+  protection denies that filename pattern in the client bundle, even for a
+  legitimately RPC-bridged `createServerFn`.
+- **Throw `Error`, never a bare object.** Errors serialize through seroval;
+  `throw { message: "..." }` does not round-trip to the client.
+- Use `throw notFound()` for a missing resource, so the route renders its
+  `notFoundComponent` and SSR replies 404 instead of 200.
+- Guard anything privileged with `isAuthenticatedGuard()`.
+
+## Routing
+
+- `_authed` is a **pathless layout**: it contributes no URL segment, only the auth
+  gate and the shared chrome.
+- `beforeLoad` must return only **serializable** data. Return just what the route
+  adds (`return { session }`); the router merges it. Spreading the whole context back
+  out fails, because the `QueryClient` in there is not serializable.
+- Table/list state belongs in the URL via `validateSearch` + `loaderDeps`, so it is
+  shareable, survives reload, and works with the back button.
+
+## Data
+
+- Keep business logic in `src/data/*.ts` as **pure functions taking the dataset as a
+  parameter**. That is what lets it be unit-tested without a server.
+- Fixtures must be **deterministic**. A randomised fixture desyncs SSR from hydration.
+- The `QueryClient` is **per-request**, built inside `getRouter()`. A module-level
+  singleton leaks cache across requests on the server.
+
+## Environment
+
+- Gate build-time concerns on `import.meta.env.PROD` (statically replaced, and
+  dead-code-eliminated). **`env.PROD` is `false` on the server** — it falls back to its
+  schema default. Using it once shipped devtools to production and crashed SSR.
+- Secrets belong in the `private` block of `src/env.ts`. Anything `VITE_`-prefixed is
+  **public and shipped to the browser**.

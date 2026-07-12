@@ -1,0 +1,41 @@
+---
+description: shadcn/Base UI component rules — applies when touching components or routes
+globs: src/components/**/*.tsx,src/routes/**/*.tsx
+alwaysApply: false
+---
+
+# UI: Base UI, not Radix
+
+The package is `@base-ui/react`. Radix is not installed. Do not reach for
+`@radix-ui/*` or `@base-ui-components/react` (an abandoned pre-1.0 name).
+
+- **No `asChild`.** Compose with `render`: `<DropdownMenuTrigger render={<Button />} />`.
+- **`DropdownMenuLabel` must be wrapped in `DropdownMenuGroup`.** Base UI maps it to
+  `Menu.GroupLabel`, which throws `MenuGroupContext is missing` if it is not inside a
+  `Group` — and that error takes the whole page down through the error boundary.
+- Style hooks are `data-open:` / `data-closed:` / `data-checked:` — not
+  `data-[state=open]:`. These variants come from `@import "shadcn/tailwind.css"` in
+  `src/styles/globals.css`; do not remove that import.
+- `Select`'s `onValueChange` yields `string | null`.
+- Prefer **controlled** inputs (`value` + `onChange`). An uncontrolled Base UI `Input`
+  outside a `Field` does not reliably fire `onChange`.
+
+## Forms
+
+`form.tsx` no longer exists — it is retired upstream. Build forms with `Field` +
+`FieldGroup` + `@tanstack/react-form`. Valibot schemas go straight into `validators`
+via Standard Schema; there is no resolver package.
+
+## RTL
+
+Arabic ships in this app. Use **logical properties only**: `ps-*`/`pe-*`,
+`ms-*`/`me-*`, `start-*`/`end-*`, `text-start`. Never `pl-*`, `ml-*`, `left-*`,
+`text-left`.
+
+Use `size-4` rather than `h-4 w-4`.
+
+## Accessibility
+
+Every interactive control needs an accessible name, and it must be **unique on the
+page** — two controls sharing a name is a real bug (screen readers and tests both
+break on it).

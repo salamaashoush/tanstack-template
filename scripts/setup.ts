@@ -3,7 +3,13 @@ import { existsSync } from "node:fs";
 import { cp, readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 
-// Path to the .env file
+// Bootstraps a local .env for a developer. In CI and in a container build the
+// configuration comes from the environment, so writing a file there would at
+// best be pointless and at worst bake a generated secret into an image layer.
+if (process.env.CI === "true" || process.env.NODE_ENV === "production") {
+  process.exit(0);
+}
+
 const ENV_FILE = join(process.cwd(), ".env");
 const ENV_EXAMPLE_FILE = join(process.cwd(), ".env.example");
 function generateSecret() {
