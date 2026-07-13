@@ -75,6 +75,14 @@ jobs:
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: bun run test:e2e:install
 
+      # There is no .env in CI (the setup script that writes one is skipped there),
+      # and the server refuses to start without a valid environment -- see
+      # src/server/preflight.ts. Supply it the way a deployment would.
+      - name: Configure the test environment
+        run: |
+          echo "API_URL=http://127.0.0.1:3000" >> "$GITHUB_ENV"
+          echo "SESSION_SECRET=$(openssl rand -base64 32)" >> "$GITHUB_ENV"
+
       # The webServer in playwright.config.ts builds and serves the app, so this
       # exercises the production bundle, not the dev server.
       - name: Run Playwright tests
