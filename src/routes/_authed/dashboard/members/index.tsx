@@ -22,6 +22,7 @@ import { MEMBER_ROLES, MEMBER_STATUSES } from "~/data/seed";
 import * as m from "~/i18n/messages";
 import { membersQuery } from "~/queries/members";
 import { membersQuerySchema } from "~/schema/members";
+import { roleLabel, statusLabel } from "~/utils/memberLabels";
 
 import { memberColumns } from "./-columns";
 
@@ -76,6 +77,28 @@ function MembersPage() {
 
   const selectedCount = Object.values(selection).filter(Boolean).length;
 
+  // Base UI's Select.Value renders the raw value unless the root is given a
+  // value -> label map, which would show "all" rather than "All roles".
+  const roleItems = useMemo(
+    () => ({
+      [ALL]: m.membersFilterAllRoles(),
+      ...Object.fromEntries(
+        MEMBER_ROLES.map((role) => [role, roleLabel(role)]),
+      ),
+    }),
+    [],
+  );
+
+  const statusItems = useMemo(
+    () => ({
+      [ALL]: m.membersFilterAllStatuses(),
+      ...Object.fromEntries(
+        MEMBER_STATUSES.map((status) => [status, statusLabel(status)]),
+      ),
+    }),
+    [],
+  );
+
   return (
     <div className="space-y-6">
       <header className="space-y-1">
@@ -98,6 +121,7 @@ function MembersPage() {
         />
 
         <Select
+          items={roleItems}
           value={search.role ?? ALL}
           onValueChange={(value: string | null) =>
             setSearch({
@@ -112,14 +136,15 @@ function MembersPage() {
           <SelectContent>
             <SelectItem value={ALL}>{m.membersFilterAllRoles()}</SelectItem>
             {MEMBER_ROLES.map((role) => (
-              <SelectItem key={role} value={role} className="capitalize">
-                {role}
+              <SelectItem key={role} value={role}>
+                {roleLabel(role)}
               </SelectItem>
             ))}
           </SelectContent>
         </Select>
 
         <Select
+          items={statusItems}
           value={search.status ?? ALL}
           onValueChange={(value: string | null) =>
             setSearch({
@@ -138,8 +163,8 @@ function MembersPage() {
           <SelectContent>
             <SelectItem value={ALL}>{m.membersFilterAllStatuses()}</SelectItem>
             {MEMBER_STATUSES.map((status) => (
-              <SelectItem key={status} value={status} className="capitalize">
-                {status}
+              <SelectItem key={status} value={status}>
+                {statusLabel(status)}
               </SelectItem>
             ))}
           </SelectContent>

@@ -2,21 +2,14 @@ import type { ColumnDef } from "@tanstack/react-table";
 
 import { Link } from "@tanstack/react-router";
 
-import type { Member, MemberStatus } from "~/data/seed";
+import type { Member } from "~/data/seed";
 
+import { StatusBadge } from "~/components/dashboard/StatusBadge";
 import { Badge } from "~/components/ui/badge";
 import { Checkbox } from "~/components/ui/checkbox";
 import * as m from "~/i18n/messages";
 import { formatRelativeDays } from "~/utils/datetime";
-
-const STATUS_VARIANT: Record<
-  MemberStatus,
-  "default" | "secondary" | "destructive" | "outline"
-> = {
-  active: "default",
-  invited: "secondary",
-  suspended: "destructive",
-};
+import { roleLabel } from "~/utils/memberLabels";
 
 // Module scope, not inside the page: defining these during render remounts every
 // cell on every keystroke of the search box.
@@ -59,22 +52,13 @@ export const memberColumns: ColumnDef<Member>[] = [
     accessorKey: "role",
     header: () => m.membersColumnRole(),
     cell: ({ row }) => (
-      <Badge variant="outline" className="capitalize">
-        {row.original.role}
-      </Badge>
+      <Badge variant="outline">{roleLabel(row.original.role)}</Badge>
     ),
   },
   {
     accessorKey: "status",
     header: () => m.membersColumnStatus(),
-    cell: ({ row }) => (
-      <Badge
-        variant={STATUS_VARIANT[row.original.status]}
-        className="capitalize"
-      >
-        {row.original.status}
-      </Badge>
-    ),
+    cell: ({ row }) => <StatusBadge status={row.original.status} />,
   },
   {
     accessorKey: "lastActiveAt",

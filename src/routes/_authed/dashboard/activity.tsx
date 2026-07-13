@@ -6,7 +6,7 @@ import { useEffect, useMemo, useRef } from "react";
 import { Badge } from "~/components/ui/badge";
 import * as m from "~/i18n/messages";
 import { activityQuery } from "~/queries/activity";
-import { formatDateTime } from "~/utils/datetime";
+import { formatDateTime, formatNumber } from "~/utils/datetime";
 
 const ROW_HEIGHT = 64;
 const OVERSCAN = 8;
@@ -57,7 +57,9 @@ function ActivityPage() {
         <h1 className="text-2xl font-semibold text-foreground">
           {m.activityTitle()}
         </h1>
-        <p className="text-muted-foreground">{m.activitySubtitle({ total })}</p>
+        <p className="text-muted-foreground">
+          {m.activitySubtitle({ total: formatNumber(total) })}
+        </p>
       </header>
 
       <div

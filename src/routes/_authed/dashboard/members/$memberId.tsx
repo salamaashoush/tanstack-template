@@ -2,6 +2,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
 
+import { StatusBadge } from "~/components/dashboard/StatusBadge";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import {
@@ -16,6 +17,7 @@ import * as m from "~/i18n/messages";
 import { memberQuery } from "~/queries/members";
 import { DEFAULT_MEMBERS_QUERY } from "~/schema/members";
 import { formatRelativeDays } from "~/utils/datetime";
+import { roleLabel } from "~/utils/memberLabels";
 
 export const Route = createFileRoute("/_authed/dashboard/members/$memberId")({
   loader: ({ context, params }) =>
@@ -67,14 +69,10 @@ function MemberDetailPage() {
           <dl className="grid gap-4 sm:grid-cols-2">
             <Detail label={m.membersColumnTeam()}>{member.team}</Detail>
             <Detail label={m.membersColumnRole()}>
-              <Badge variant="outline" className="capitalize">
-                {member.role}
-              </Badge>
+              <Badge variant="outline">{roleLabel(member.role)}</Badge>
             </Detail>
             <Detail label={m.membersColumnStatus()}>
-              <Badge variant="outline" className="capitalize">
-                {member.status}
-              </Badge>
+              <StatusBadge status={member.status} />
             </Detail>
             <Detail label={m.membersColumnLastActive()}>
               {formatRelativeDays(member.lastActiveAt)}

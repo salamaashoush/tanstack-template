@@ -63,7 +63,7 @@ test.describe("members table", () => {
     page,
   }) => {
     await page.getByRole("combobox", { name: "Filter by role" }).click();
-    await page.getByRole("option", { name: "owner", exact: true }).click();
+    await page.getByRole("option", { name: "Owner", exact: true }).click();
 
     await expect(page).toHaveURL(/role=owner/);
     // Every visible row is an owner -- proof the server filtered the whole set.

@@ -36,6 +36,13 @@
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
 
+  /* Semantic status colours. `primary` is crimson in this theme, so using it for
+     a healthy state made "active" read as an alarm. */
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
@@ -124,6 +131,10 @@
     --accent-foreground: hsl(240 5.9% 10%);
     --destructive: hsl(0 84.2% 60.2%);
     --destructive-foreground: hsl(0 0% 98%);
+    --success: hsl(142.1 76.2% 36.3%);
+    --success-foreground: hsl(0 0% 98%);
+    --warning: hsl(37.7 92.1% 50.2%);
+    --warning-foreground: hsl(20.9 91.7% 14.1%);
     --border: hsl(240 5.9% 90%);
     --input: hsl(240 5.9% 90%);
     --ring: hsl(346.8 77.2% 49.8%);
@@ -158,8 +169,12 @@
     --muted-foreground: hsl(240 5% 64.9%);
     --accent: hsl(12 6.5% 15.1%);
     --accent-foreground: hsl(0 0% 98%);
-    --destructive: hsl(0 62.8% 30.6%);
+    --destructive: hsl(0 72.2% 50.6%);
     --destructive-foreground: hsl(0 85.7% 97.3%);
+    --success: hsl(142.1 70.6% 45.3%);
+    --success-foreground: hsl(144.9 80.4% 10%);
+    --warning: hsl(47.9 95.8% 53.1%);
+    --warning-foreground: hsl(20.9 91.7% 14.1%);
     --border: hsl(240 3.7% 15.9%);
     --input: hsl(240 3.7% 15.9%);
     --ring: hsl(346.8 77.2% 49.8%);

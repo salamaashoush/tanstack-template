@@ -18,6 +18,11 @@ export function formatRelativeDays(
   return formatter.format(days, "day");
 }
 
+/** Locale-aware: 10,000 in English, ١٠٬٠٠٠ in Arabic. */
+export function formatNumber(value: number): string {
+  return new Intl.NumberFormat(getLocale()).format(value);
+}
+
 export function formatDateTime(isoDate: string): string {
   return new Intl.DateTimeFormat(getLocale(), {
     dateStyle: "medium",

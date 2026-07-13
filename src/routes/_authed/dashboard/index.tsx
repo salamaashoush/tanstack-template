@@ -20,7 +20,7 @@ import {
 import * as m from "~/i18n/messages";
 import { activityQuery } from "~/queries/activity";
 import { memberStatsQuery } from "~/queries/members";
-import { formatDateTime } from "~/utils/datetime";
+import { formatDateTime, formatNumber } from "~/utils/datetime";
 
 export const Route = createFileRoute("/_authed/dashboard/")({
   loader: async ({ context }) => {
@@ -130,7 +130,7 @@ function StatCard({ label, value, icon }: StatCardProps) {
           className="text-2xl font-semibold text-foreground"
           data-testid={`stat-${label}`}
         >
-          {value}
+          {formatNumber(value)}
         </p>
       </CardContent>
     </Card>

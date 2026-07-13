@@ -7,6 +7,7 @@ import { DEFAULT_MEMBERS_QUERY } from "~/schema/members";
 import type { Member } from "./seed";
 
 import { countMembersByStatus, queryMembers } from "./members";
+import { MEMBERS } from "./seed";
 
 function member(overrides: Partial<Member> = {}): Member {
   return {
@@ -132,6 +133,23 @@ describe("queryMembers", () => {
     const order = DATASET.map((row) => row.id);
     queryMembers(query({ sort: "name", order: "desc" }), DATASET);
     expect(DATASET.map((row) => row.id)).toEqual(order);
+  });
+});
+
+describe("the seeded dataset", () => {
+  it("gives every member a unique id, name and email", () => {
+    // The email is derived from the name, so colliding names produced several
+    // people sharing one address -- nonsense for a members table.
+    expect(new Set(MEMBERS.map((row) => row.id)).size).toBe(MEMBERS.length);
+    expect(new Set(MEMBERS.map((row) => row.name)).size).toBe(MEMBERS.length);
+    expect(new Set(MEMBERS.map((row) => row.email)).size).toBe(MEMBERS.length);
+  });
+
+  it("is deterministic, so SSR and hydration agree", () => {
+    expect(MEMBERS[0]?.id).toBe("mem_0001");
+    expect(MEMBERS.at(-1)?.id).toBe(
+      `mem_${String(MEMBERS.length).padStart(4, "0")}`,
+    );
   });
 });
 

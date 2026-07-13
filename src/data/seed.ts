@@ -109,22 +109,42 @@ function pick<T>(random: () => number, values: readonly T[]): T {
 
 function buildMembers(count: number): Member[] {
   const random = rng(0x5eed);
-  return Array.from({ length: count }, (_, index) => {
-    const first = pick(random, FIRST_NAMES);
-    const last = pick(random, LAST_NAMES);
-    const name = `${first} ${last}`;
-    return {
-      id: `mem_${String(index + 1).padStart(4, "0")}`,
-      name,
-      email: `${first.toLowerCase()}.${last.toLowerCase().replace(/[^a-z]/g, "")}@acme.test`,
-      team: pick(random, TEAMS),
-      role: pick(random, MEMBER_ROLES),
-      status: pick(random, MEMBER_STATUSES),
-      lastActiveAt: new Date(
-        EPOCH - Math.floor(random() * 90) * 86_400_000,
-      ).toISOString(),
-    };
-  });
+
+  // Draw names from the full cross-product rather than picking each part at
+  // random: with 16x16 combinations and 240 members, random picks collide
+  // constantly, and because the email is derived from the name that produced
+  // several people sharing one address.
+  const combinations = FIRST_NAMES.flatMap((first) =>
+    LAST_NAMES.map((last) => ({ first, last })),
+  );
+  if (combinations.length < count) {
+    throw new Error(
+      `Cannot build ${String(count)} members with unique names from ${String(combinations.length)} combinations`,
+    );
+  }
+
+  // Deterministic Fisher-Yates, so the order looks arbitrary but never changes.
+  for (let i = combinations.length - 1; i > 0; i--) {
+    const j = Math.floor(random() * (i + 1));
+    const a = combinations[i];
+    const b = combinations[j];
+    if (a && b) {
+      combinations[i] = b;
+      combinations[j] = a;
+    }
+  }
+
+  return combinations.slice(0, count).map(({ first, last }, index) => ({
+    id: `mem_${String(index + 1).padStart(4, "0")}`,
+    name: `${first} ${last}`,
+    email: `${first.toLowerCase()}.${last.toLowerCase().replaceAll(/[^a-z]/g, "")}@acme.test`,
+    team: pick(random, TEAMS),
+    role: pick(random, MEMBER_ROLES),
+    status: pick(random, MEMBER_STATUSES),
+    lastActiveAt: new Date(
+      EPOCH - Math.floor(random() * 90) * 86_400_000,
+    ).toISOString(),
+  }));
 }
 
 function buildActivity(count: number, members: Member[]): ActivityEvent[] {
