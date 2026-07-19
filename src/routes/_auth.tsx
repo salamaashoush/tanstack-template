@@ -4,7 +4,7 @@ import { AuthLayout } from "~/components/auth/AuthLayout";
 
 export const Route = createFileRoute("/_auth")({
   beforeLoad: ({ context }) => {
-    if (context.session?.isAuthenticated) {
+    if (context.auth.isAuthenticated) {
       throw redirect({ to: "/" });
     }
   },

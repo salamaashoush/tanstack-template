@@ -19,7 +19,7 @@ export function getRouter() {
   const router = createTanStackRouter({
     routeTree,
     context: {
-      session: undefined,
+      auth: { isAuthenticated: false },
       queryClient,
     },
     defaultPreload: "intent",

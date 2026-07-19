@@ -10,13 +10,13 @@ import {
 import { ThemeProvider } from "next-themes";
 import { lazy, Suspense, useEffect, useState } from "react";
 
-import type { AppSession } from "~/utils/session";
+import type { AuthState } from "~/utils/session";
 
 import { Toaster } from "~/components/ui/sonner";
 import * as m from "~/i18n/messages";
 import { getLocale, getTextDirection } from "~/i18n/runtime";
 import { getUserProfileQuery } from "~/queries/user";
-import { getUserSession } from "~/server/auth";
+import { getAuthState } from "~/server/auth";
 import appCss from "~/styles/globals.css?url";
 
 import { DefaultCatchBoundary } from "../components/DefaultCatchBoundary";
@@ -53,21 +53,21 @@ function Devtools() {
 }
 
 interface AppRouterContext {
-  session?: AppSession;
+  auth: AuthState;
   queryClient: QueryClient;
 }
 
 export const Route = createRootRouteWithContext<AppRouterContext>()({
   beforeLoad: async () => {
-    const session = (await getUserSession()) as AppSession | undefined;
+    const auth = await getAuthState();
     // Return only what this route adds. Router merges it into the existing
     // context, and the return value must be serializable (the QueryClient
     // already in context is not).
-    return { session };
+    return { auth };
   },
   loader: async ({ context }) => {
-    const { session, queryClient } = context;
-    if (session?.isAuthenticated) {
+    const { auth, queryClient } = context;
+    if (auth.isAuthenticated) {
       await queryClient.ensureQueryData(getUserProfileQuery);
     }
   },

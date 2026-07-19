@@ -1,5 +1,5 @@
 import { useForm } from "@tanstack/react-form";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useCallback } from "react";
@@ -19,6 +19,7 @@ import { login } from "~/server/auth";
 
 export function SignInForm() {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const { mutateAsync } = useMutation({
     mutationFn: useServerFn(login),
     mutationKey: ["user/login"],
@@ -26,6 +27,8 @@ export function SignInForm() {
       toast(m.authSignInSuccessTitle(), {
         description: m.authSignInSuccessMessage(),
       });
+      // Identity changed: drop anything the previous session left behind.
+      queryClient.clear();
       await router.invalidate();
       await router.navigate({ to: "/dashboard" });
     },

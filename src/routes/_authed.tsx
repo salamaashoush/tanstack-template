@@ -5,7 +5,7 @@ import { getUserProfileQuery } from "~/queries/user";
 
 export const Route = createFileRoute("/_authed")({
   beforeLoad: ({ context, location }) => {
-    if (!context.session?.isAuthenticated) {
+    if (!context.auth.isAuthenticated) {
       throw redirect({
         to: "/sign-in",
         search: {
@@ -15,7 +15,7 @@ export const Route = createFileRoute("/_authed")({
     }
   },
   loader: async ({ context }) => {
-    if (context.session?.isAuthenticated) {
+    if (context.auth.isAuthenticated) {
       await context.queryClient.ensureQueryData(getUserProfileQuery);
     }
   },

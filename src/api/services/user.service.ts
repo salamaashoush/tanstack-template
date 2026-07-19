@@ -26,6 +26,10 @@ export class UserService {
   private fakeDB: Map<string, RegisterSchemaOutput> = new Map([
     [fakeUser.email, fakeUser],
   ]);
+  // Cross-user leak: the service is a process-wide singleton, so this holds the
+  // last person to sign in anywhere and getUserProfile hands their details to
+  // every authenticated caller. Only survivable because the real profile comes
+  // from an API keyed by the caller's bearer token -- do not copy this shape.
   private currentFakeUser: UserProfile | null = null;
   constructor(private readonly httpClient: HttpClient) {}
 
