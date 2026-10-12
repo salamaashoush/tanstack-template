@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
 
+import { useState } from "react";
+
 import { Logo } from "~/components/common/Logo";
 import { LocaleToggle } from "~/components/theme/LocaleToggle";
 import { ThemeToggle } from "~/components/theme/ThemeToggle";
@@ -10,7 +12,7 @@ interface AuthLayoutProps {
 }
 
 export function AuthLayout({ children }: AuthLayoutProps) {
-  const year = new Date().getFullYear();
+  const [year] = useState(() => new Date().getFullYear());
   return (
     <div className="grid min-h-screen bg-background lg:grid-cols-2">
       <div className="flex min-h-screen flex-col">
@@ -20,7 +22,7 @@ export function AuthLayout({ children }: AuthLayoutProps) {
           <ThemeToggle />
         </div>
         <div className="flex flex-1 items-center justify-center p-8 lg:p-12 xl:p-16">
-          <div className="w-full max-w-[400px]">{children}</div>
+          <div className="w-full max-w-100">{children}</div>
         </div>
         <div className="p-8">
           <p className="text-center text-xs text-muted-foreground">
@@ -29,7 +31,7 @@ export function AuthLayout({ children }: AuthLayoutProps) {
         </div>
       </div>
       <div className="hidden flex-col items-center justify-center bg-muted/50 p-12 lg:flex xl:p-16">
-        <div className="w-full max-w-[480px] text-center">
+        <div className="w-full max-w-120 text-center">
           <Logo className="mx-auto mb-12" />
           <h1 className="mb-6 text-[56px] leading-[1.1] font-semibold text-foreground">
             {m.authLayoutTitle()}

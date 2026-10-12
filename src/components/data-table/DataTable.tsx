@@ -1,9 +1,19 @@
-import type { ColumnDef, SortingState, Table } from "@tanstack/react-table";
+import type {
+  ColumnDef,
+  Header,
+  RowData,
+  RowSelectionState,
+  SortingState,
+} from "@tanstack/react-table";
 
 import {
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
+  columnSizingFeature,
+  FlexRender,
+  functionalUpdate,
+  rowSelectionFeature,
+  rowSortingFeature,
+  tableFeatures,
+  useTable,
 } from "@tanstack/react-table";
 import { ArrowDown, ArrowUp, ChevronsUpDown } from "lucide-react";
 
@@ -19,14 +29,22 @@ import {
 } from "~/components/ui/table";
 import { cn } from "~/utils/cn";
 
-interface DataTableProps<TData> {
-  columns: ColumnDef<TData>[];
+const dataTableFeatures = tableFeatures({
+  rowSortingFeature,
+  rowSelectionFeature,
+  columnSizingFeature,
+});
+
+export type DataTableFeatures = typeof dataTableFeatures;
+
+interface DataTableProps<TData extends RowData> {
+  columns: ColumnDef<DataTableFeatures, TData>[];
   data: TData[];
   sorting: SortingState;
   onSortingChange: (sorting: SortingState) => void;
   getRowId: (row: TData) => string;
-  rowSelection?: Record<string, boolean>;
-  onRowSelectionChange?: (selection: Record<string, boolean>) => void;
+  rowSelection?: RowSelectionState;
+  onRowSelectionChange?: (selection: RowSelectionState) => void;
   /** Shown instead of rows when there are none. */
   emptyState: React.ReactNode;
   /** Dims the table while a new page is fetched, keeping the old rows visible. */
@@ -36,7 +54,7 @@ interface DataTableProps<TData> {
   isLoading?: boolean;
 }
 
-export function DataTable<TData>({
+export function DataTable<TData extends RowData>({
   columns,
   data,
   sorting,
@@ -49,30 +67,23 @@ export function DataTable<TData>({
   isLoading = false,
   skeletonRows = 10,
 }: DataTableProps<TData>) {
-  const table = useReactTable({
+  const table = useTable({
+    features: dataTableFeatures,
     data,
     columns,
     getRowId,
     state: { sorting, rowSelection: rowSelection ?? {} },
-    // The server already sorted and paginated; the table must not re-do it on
-    // the current page, which would sort only the visible slice.
     manualSorting: true,
-    manualPagination: true,
     enableRowSelection: onRowSelectionChange !== undefined,
     onSortingChange: (updater) => {
-      onSortingChange(
-        typeof updater === "function" ? updater(sorting) : updater,
-      );
+      onSortingChange(functionalUpdate(updater, sorting));
     },
     onRowSelectionChange: (updater) => {
       if (!onRowSelectionChange) {
         return;
       }
-      onRowSelectionChange(
-        typeof updater === "function" ? updater(rowSelection ?? {}) : updater,
-      );
+      onRowSelectionChange(functionalUpdate(updater, rowSelection ?? {}));
     },
-    getCoreRowModel: getCoreRowModel(),
   });
 
   return (
@@ -111,9 +122,9 @@ export function DataTable<TData>({
                 key={row.id}
                 data-state={row.getIsSelected() ? "selected" : undefined}
               >
-                {row.getVisibleCells().map((cell) => (
+                {row.getAllCells().map((cell) => (
                   <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    <table.FlexRender cell={cell} />
                   </TableCell>
                 ))}
               </TableRow>
@@ -125,15 +136,12 @@ export function DataTable<TData>({
   );
 }
 
-type HeaderContext<TData> = ReturnType<
-  Table<TData>["getHeaderGroups"]
->[number]["headers"][number];
-
-function SortableHeader<TData>({ header }: { header: HeaderContext<TData> }) {
-  const content = flexRender(
-    header.column.columnDef.header,
-    header.getContext(),
-  );
+function SortableHeader<TData extends RowData>({
+  header,
+}: {
+  header: Header<DataTableFeatures, TData>;
+}) {
+  const content = <FlexRender header={header} />;
 
   if (!header.column.getCanSort()) {
     return content;

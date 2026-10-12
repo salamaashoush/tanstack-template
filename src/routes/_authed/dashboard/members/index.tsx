@@ -1,4 +1,4 @@
-import type { SortingState } from "@tanstack/react-table";
+import type { RowSelectionState, SortingState } from "@tanstack/react-table";
 
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
@@ -42,7 +42,7 @@ function MembersPage() {
   const search = Route.useSearch();
   const navigate = useNavigate({ from: Route.fullPath });
   const { data, isPlaceholderData } = useQuery(membersQuery(search));
-  const [selection, setSelection] = useState<Record<string, boolean>>({});
+  const [selection, setSelection] = useState<RowSelectionState>({});
 
   const setSearch = useCallback(
     (next: Partial<MembersQuery>) => {
@@ -75,7 +75,7 @@ function MembersPage() {
     [setSearch],
   );
 
-  const selectedCount = Object.values(selection).filter(Boolean).length;
+  const selectedCount = Object.keys(selection).length;
 
   // Base UI's Select.Value renders the raw value unless the root is given a
   // value -> label map, which would show "all" rather than "All roles".

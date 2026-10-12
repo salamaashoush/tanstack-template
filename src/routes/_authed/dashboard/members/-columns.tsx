@@ -2,6 +2,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 
 import { Link } from "@tanstack/react-router";
 
+import type { DataTableFeatures } from "~/components/data-table/DataTable";
 import type { Member } from "~/data/seed";
 
 import { StatusBadge } from "~/components/dashboard/StatusBadge";
@@ -13,7 +14,7 @@ import { roleLabel } from "~/utils/memberLabels";
 
 // Module scope, not inside the page: defining these during render remounts every
 // cell on every keystroke of the search box.
-export const memberColumns: ColumnDef<Member>[] = [
+export const memberColumns: ColumnDef<DataTableFeatures, Member>[] = [
   {
     id: "select",
     size: 40,

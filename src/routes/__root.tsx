@@ -2,13 +2,14 @@ import type { QueryClient } from "@tanstack/react-query";
 import type { ReactNode } from "react";
 
 import {
+  ClientOnly,
   createRootRouteWithContext,
   HeadContent,
   Outlet,
   Scripts,
 } from "@tanstack/react-router";
 import { ThemeProvider } from "next-themes";
-import { lazy, Suspense, useEffect, useState } from "react";
+import { lazy, Suspense } from "react";
 
 import type { AuthState } from "~/utils/session";
 
@@ -35,20 +36,13 @@ const LazyDevtools = import.meta.env.PROD
     );
 
 function Devtools() {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   // The devtools shell is client-only and throws if server-rendered.
-  if (!mounted) {
-    return null;
-  }
-
   return (
-    <Suspense fallback={null}>
-      <LazyDevtools />
-    </Suspense>
+    <ClientOnly>
+      <Suspense fallback={null}>
+        <LazyDevtools />
+      </Suspense>
+    </ClientOnly>
   );
 }
 

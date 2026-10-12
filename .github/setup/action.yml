@@ -13,7 +13,7 @@ runs:
     # setup-bun does not install Node, and vite, vitest and playwright all execute
     # on Node via their shebangs -- both runtimes are required.
     - name: Use Node.js ${{ env.NODE_VERSION }}
-      uses: actions/setup-node@v6
+      uses: actions/setup-node@v7
       with:
         node-version: ${{ env.NODE_VERSION }}
 
